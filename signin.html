@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, white, whitesmoke, lightblue, lightcyan);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            animation: fadeInUp 1s ease forwards;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            animation: slideInRight 1s ease forwards;
+        }
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p {
+            animation: fadeInUp 1s ease forwards;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            animation: slideInRight 1s ease forwards;
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    
+        img:hover {
+            box-shadow: 0 0 10px lightskyblue;
+            transition: box-shadow 0.5s;
+        }
+        img {
+            border-radius: 10px;
+        }
+
+        .loading {
+            display: none; /* Initially hide the loading spinner */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px; /* Increase the width */
+            height: 50px; /* Increase the height */
+            border: 5px solid red;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+          .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+        }
+        .error {
+            border-color: red !important;
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" class="background-animation"></canvas>
+<a href="mainLogin.html"><img src="cvBot Logo.png"></a>
+<h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+<div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <input id="login" type="submit" value="Login">
+        </div>
+    </form>
+    <p>If it's your first time here, <a href="signup.html">sign up here</a>.</p>
+    <p><a href="OTP_Page.html">Forgotten password?</a>.</p>
+    <p><a href="delete_user.html">Delete Account now</a>.</p>
+</div>
+
+<div id="loading" class="loading">
+    <div class="spinner"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+        authDomain: "cv-bot-495f8.firebaseapp.com",
+        projectId: "cv-bot-495f8",
+        storageBucket: "cv-bot-495f8.appspot.com",
+        messagingSenderId: "210805657683",
+        appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+    };
+
+    import {getDatabase, set, get, update, remove, ref, child } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig)
+    const db = getDatabase();
+
+    const loginForm = document.getElementById('loginForm');
+
+    // Add event listener to the submit button
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent form submission
+
+        const ID = loginForm.username.value;
+        const password = loginForm.password.value;
+        
+        showLoading();
+        const dbref = ref(db);
+        get(child(dbref, "Person/" + ID))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const pass = snapshot.val().Password;
+
+                if (password === pass) {
+                    // Show the loading spinner
+                    
+                    const Identity = loginForm.username.value;
+                    window.location.href = "ViewJobs.html?Identity=" + encodeURIComponent(Identity);
+
+                } else {
+                    document.getElementById('loading').style.display = 'none';
+
+                    showAlert("Incorrect password");
+                }
+            } else {
+                
+                document.getElementById('loading').style.display = 'none';
+                showAlert("User not found");
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting data:", error);
+        });
+    });
+
+    // Function to show the loading spinner
+    function showLoading() {
+        // Display the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate loading for 3 seconds
+        setTimeout(() => {
+            
+        
+        }, 3000);
+    }
+
+    function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert');
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 500);
+                }, 3000); // Adjust the delay for how long the alert stays visible
+            }, 100); // Adding a slight delay to ensure smooth transition
+        }
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let numPoints = 100;
+    let baseRadius = 50;
+    let speed = 3;  // How fast the points move
+
+    let points = [];
+
+    function generatePoints() {
+        for (let i = 0; i < numPoints; i++) {
+            const angle = Math.PI * 2 * Math.random();
+            const radius = Math.random() * baseRadius;
+            points.push({
+                x: canvas.width / 2 + Math.cos(angle) * radius,
+                y: canvas.height / 2 + Math.sin(angle) * radius,
+                dx: Math.random() * speed,
+                dy: Math.random() * speed
+            });
+        }
+    }
+
+    function drawLine(point1, point2) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';  // Blue with a slight transparency
+        ctx.moveTo(point1.x, point1.y);
+        ctx.lineTo(point2.x, point2.y);
+        ctx.stroke();
+    }
+
+    function updatePoints() {
+        for (let i = 0; i < numPoints; i++) {
+            points[i].x += points[i].dx;
+            points[i].y += points[i].dy;
+
+            // Check if the point hits the edge of the canvas
+            if (points[i].x < 0 || points[i].x > canvas.width) {
+                points[i].dx *= -1;
+            }
+
+            if (points[i].y < 0 || points[i].y > canvas.height) {
+                points[i].dy *= -1;
+            }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the lines
+        for (let i = 0; i < numPoints; i++) {
+            for (let j = i + 1; j < numPoints; j++) {
+                const distance = Math.sqrt(Math.pow(points[i].x - points[j].x, 2) + Math.pow(points[i].y - points[j].y, 2));
+                // Only draw lines between points that are close together
+                if (distance < baseRadius * 2) {
+                    drawLine(points[i], points[j]);
+                }
+            }
+        }
+
+        updatePoints();
+
+        requestAnimationFrame(draw);
+    }
+
+    generatePoints();
+    draw();
+
+</script>
+</body>
+</html>
+
+
+
+
+
+

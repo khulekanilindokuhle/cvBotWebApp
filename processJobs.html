@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Company Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+       <style>
+            *{
+                font-family: 'Poppins',sans-serif;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            :root{
+                --body-color: #E4E9F7;
+                --sidebar-color:#FFF;
+                --primary-color: #695CFE;
+                --primary-color-light: #F6F5FF;
+                --toggle-color: #DDD;
+                --text-color: #707070;
+                
+                --tran-02: all 0.2s ease;
+                --tran-03: all 0.3s ease ;
+                --tran-04: all 0.4s ease;
+                --tran-05: all 0.5s ease;
+            }
+            body{
+                height: 100px;
+                background: var(--body-color);
+                transition: var(--trans-04);
+                font-family: Arial, sans-serif;
+            margin: 20px;
+            }
+            .application {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .application h2 {
+            margin-top: 0;
+        }
+            body.dark{
+                --body-color: #18191A;
+                --sidebar-color:#242526;
+                --primary-color: #3A3B3C;
+                --primary-color-light: #3A3B3C;
+                --toggle-color: #FFF;
+                --text-color: #CCC;
+            }
+            /*===== Sidebar=====*/
+            .sidebar{
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 250px;
+                padding:10px 14px;
+                background: var(--sidebar-color);
+                transition: var(--trans-05);
+                z-index: 100;
+            }
+            .sidebar.close{
+                width: 84px;
+            }
+            .sidebar .text{
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--text-color);
+                transition: var(--trans-03);
+                white-space: nowrap;
+                opacity: 1;
+            }
+            .sidebar.close .text{
+                opacity: 0;
+            }
+            .sidebar .image{
+                min-width: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar li{
+                height: 50px;
+                margin-top: 10px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                
+            }
+            .sidebar li .icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width:  60px;
+                font-size: 20px;
+            }
+            .sidebar li .icon,
+            .sidebar li .text{
+                color: var(--text-color);
+                transition: var(--trans-02);
+            }
+            .sidebar header{
+                position: relative;
+            }
+            .sidebar .image-text img{
+                width: 100px;
+                border-radius: 6px;
+            }
+            .sidebar header .image-text{
+                display: flex;
+                align-items: center;
+                
+            }
+            header .image-text .header-text{
+                display: flex;
+                flex-direction: column;
+            }
+            .header-text .name{
+                font-weight: 600;
+            }
+            .header-text .profession{
+                margin-top: -2px;
+            }
+            .sidebar header .toggle{
+                position: absolute;
+                top: 70px;
+                right: -15px;
+                transform: translateY(-50%) rotate(180deg);
+                height: 25px;
+                weight: 25px;
+                background: var(--primary-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                color: var(--sidebar-color);
+                font-size: 22px;
+                transition: var(--trans-04);
+            }
+            .sidebar.close header .toggle{
+                transform: translateY(-50%);
+            }
+            body.dark .sidebar header .toggle{
+                color: var(--text-color);
+            }
+            .sidebar .menu{
+                margin-top: 35px;
+            }
+            .sidebar .search-box{
+                padding-left: 20px;
+                background: var(--primary-color-light);
+                border-radius: 6px;
+                transition: var(--trans-05);
+            }
+            .search-box input{
+                height: 100%;
+                width: 100%;
+                padding-left: 20px;
+                outline: none;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: 500;
+                background: var(--primary-color-light);
+                transition: var(--trans-05);
+            }
+            .sidebar li a{
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: var(--tran-04);
+            }
+            .sidebar li a:hover{
+                background: var(--primary-color);
+            }
+            body.dark .sidebar li a:hover .icon,
+            body.dark .sidebar li a:hover .text{
+                color: var(--text-color);
+            }
+            .sidebar li a:hover .icon,
+            .sidebar li a:hover .text{
+                color: var(--sidebar-color);
+            }
+            .sidebar .menu-bar{
+                height: calc(100% - 50px);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                
+            }
+            /*== Dark MOde==*/
+            .menu-bar .mode{
+                position: relative;
+                border-radius: 6px;
+                background: var(--primary-color-light);
+            }
+            .menu-bar .mode .moon-sun{
+                height: 50px;
+                width: 60px;
+                display: flex;
+                align-items: center;
+                
+            }
+            .menu-bar .mode i{
+                position: absolute;
+                transition: var(--trans-03);
+            }
+            .menu-bar .mode i.sun{
+                opacity: 0;
+            }
+            body.dark .menu-bar .mode i.sun{
+                opacity: 1;
+            }
+            body.dark .menu-bar .mode i.moon{
+                opacity: 0;
+            }
+            .menu-bar .mode .toggle-switch{
+                position: absolute;
+                right: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                min-width: 60px;
+                cursor: pointer;
+                border-radius: 6px;
+                background: var(--primary-color-light);
+                transition: var(--trans-05);
+            }
+            .toggle-switch .switch{
+                position: relative;
+                height: 22px;
+                width: 40px;
+                border-radius: 25px;
+                background: var(--toggle-color);
+                transition: var(--trans-05);
+            }
+            .switch::before{
+                content: '';
+                position: absolute;
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
+                background: var(--sidebar-color);
+                transition: var(--trans-03);
+            }
+            body.dark .switch::before{
+                left: 24px;
+            }
+            
+            /*=========*/
+            .home{
+                position: relative;
+                height: 100vh;
+                left: 250px;
+                width: calc(100% - 250px);
+                background: var(--body-color);;
+                transition: var(--trans-05);
+            }
+            .home .text{
+                padding-top: 20px;
+                font-size: 30px;
+                font-weight: 500;
+                color: var(--text-color);
+                text-align: center;
+            }
+            .home .about{
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--text-color);
+                padding: 8px 50px;
+            }
+            .home .container2{
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--text-color);
+                padding: 8px 50px;
+            }
+            .sidebar.close ~ .home{
+                left: 88px;
+                width: calc(100% - 88px);
+            }
+            .container2 {
+    position: fixed;
+    top: calc(2vh + 3cm); /* Move it 2 cm down */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    width: calc(100% - 40px);
+    padding: 50px;
+    background: var(--body-color);
+    height: 80vh; /* Adjust the height based on viewport height */
+    overflow-y: auto; /* Add vertical scrollbar if content overflows */
+}
+
+
+
+
+.container2 h1 {
+    position: fixed;
+     /* Move it 2 cm down */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+    margin-bottom: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+    width: calc(100%); /* Adjust width to match container width */
+    padding: 20px; /* Adjust padding for better visibility */
+    background: var(--body-color); /* Background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better contrast */
+}
+
+
+.primary-button2 {
+    background: var(--primary-color);
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.primary-button2:hover {
+    background-color: #ccc;
+}
+
+.line2 {
+    border-top: 1px solid lightskyblue;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.footer {
+    margin-top: 40px;
+    color: #888;
+}
+
+.footer p {
+    font-size: 14px;
+}
+
+            .contain5{
+       border: solid 0.5px rgb(139, 250, 135);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+        text-align: center;
+        width: 1200px;
+       height: 1200px;
+    }
+    .line2{
+        border-top: 0.5px solid lightskyblue; /* Black line on top */
+      width: 400px; /* Full width */
+      height: 0px; /* No height (creates a line) */
+      margin: 10px auto; /* Center and add margin */
+    }
+    .job-list {
+    margin-top: 100px; /* Add some space above the job list */
+}
+
+.job {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.job h2 {
+    margin-top: 0;
+    color: black;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+}
+
+
+/* Add other job-related styles here */
+
+#updateForm {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+#updateForm input[type="text"],
+#updateForm input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#updateForm input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #695cfe;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#updateForm input[type="submit"]:hover {
+    background-color: #543db6;
+}
+
+.footer {
+    margin-top: 40px;
+    color: #888;
+}
+
+.footer p {
+    font-size: 14px;
+}
+#noJobs {
+    text-align: start;
+}
+
+
+
+        .jobss {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+
+        .score-display {
+    padding: 10px; /* Padding around score display */
+    background-color: #4CAF50;
+    border-radius: 5px; /* Rounded corners */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center content vertically */
+}
+
+.score {
+    margin-right: 10px; /* Adjust margin as needed */
+    font-weight: bold; /* Make the text bold */
+}
+
+.loader {
+    width: 20px; /* Loader width */
+    height: 20px; /* Loader height */
+    border: 2px solid blue; /* Loader border */
+    border-top: 2px solid red; /* Loader border color */
+    display: none;
+    border-radius: 50%; /* Rounded shape */
+    animation: spin 1s linear infinite; /* Animation */
+}
+
+.alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+        }
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading {
+            display: none; /* Initially hide the loading spinner */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px; /* Increase the width */
+            height: 50px; /* Increase the height */
+            border: 5px solid red;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        button[type="submit"] {
+  background-color: #4CAF50;
+  color: black;
+  padding: 10px 20px;
+  font-size: 34.px;
+  font-weight: bold; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#imageUpload {
+        background-color:  #695CFE; /* Use your primary color */
+        color: black;
+        padding: 10px 30px; /* Adjust padding to make the button longer */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 25px;
+        transition: background-color 0.3s ease;
+        width: 100%; /* Make the button full width of its container */
+        max-width: 1100px; /* Set a maximum width if needed */
+        text-align: center; /* Center align text */
+    }
+
+    #imageUpload:hover {
+        background-color: #4a42c0; /* Darken or adjust hover color */
+    }
+
+
+
+
+
+
+        
+
+        </style>
+    </head>
+    <body>
+        <nav class="sidebar close">
+            <header>
+                <div class = "image-text">
+                    <span class ="image">
+                        <a href="index.html"><a href="index.html"><img src="cvBot Logo.png" alt="logo"></a> 
+                    </span>
+                    
+                    
+                </div>
+                 
+                <i class='bx bxs-chevron-right toggle' ></i>
+            </header>
+            
+            <div class="menu-bar">
+                <div class="menu">
+                    <ul class="menu-links">
+                        <li class="nav-link">
+                            <a href ="company_loggedIn.html">
+                                <i class='bx bx-home icon'></i>
+                                <span class="text nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="addJob.html">
+                                <i class='bx bx-plus icon'></i>
+                                <span class="text nav-text">Add Job</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="processJobs.html">
+                                <i class='bx bx-briefcase icon'></i>
+                                <span class="text nav-text">Jobs</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="#">
+                                <i class='bx bxs-group icon'></i>
+                                <span class="text nav-text">Candidates</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="#">
+                                <i class='bx bx-calendar-alt icon'></i>
+                                <span class="text nav-text">Interview</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="analyrics.html">
+                                <i class='bx bx-align-right bx-rotate-90 icon'></i>
+                                <span class="text nav-text">Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="summary.html">
+                                <i class='bx bx-book-open icon'></i>
+                                <span class="text nav-text">Summary</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class ="bottom-content">
+                    <li class="">
+                        <a href ="index.html">
+                            <i class='bx bx-log-out icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                    <li class="mode">
+                        <div class="moon-sun">
+                            <i class='bx bx-moon icon moon'></i>
+                            <i class='bx bx-sun icon sun'></i>
+                        </div>
+                        <span class ="mode-text text">Dark mode</span>
+                        
+                        <div class="toggle-switch">
+                            <span class ="switch"></span>
+                        </div>
+                    </li>
+                    
+                </div>
+                
+            </div>
+            
+            
+        </nav>
+        
+        <nav class="below">
+            
+        </nav>
+
+       
+       
+        <section class="home">
+            <div class="upload-container">
+                <input type="submit" id="imageUpload" onclick="generatePDF()" value="DOWNLOAD SUMMARY REPORT">
+                
+          
+            </div>
+    
+            <div  id="downloadJobs" class="container2" >
+                <h1>Job Applications</h1>
+
+               
+
+            
+
+               
+                <div id="jobList" class="job-list">
+
+                    
+
+                </div>
+
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                </div>
+                   
+
+               
+                <div class="footer">
+                    <p>&copy;2024 CVBot - Cookies, Privacy and Terms</p>
+                </div>
+            </div>
+        </section>
+
+      
+        
+
+        <script>
+            function generatePDF() {
+                const { jsPDF } = window.jspdf; // Ensure jsPDF is correctly referenced
+                const invoice = document.getElementById('jobList');
+                
+                // Create a title for the PDF
+                const title = "Job Applications List";
+      
+                html2canvas(invoice)
+                    .then((canvas) => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const pdf = new jsPDF();
+                        const imgProps = pdf.getImageProperties(imgData);
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+                        // Add title to the PDF
+                        pdf.text(title, pdfWidth / 2, 10, { align: 'center' });
+      
+                        // Add image to the PDF
+                        pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight - 20);
+                        
+                        pdf.save('Jobs Received.pdf');
+                    });
+            }
+        </script>
+
+        
+          
+  <script type="module">
+
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+    
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+            authDomain: "cv-bot-495f8.firebaseapp.com",
+            projectId: "cv-bot-495f8",
+            storageBucket: "cv-bot-495f8.appspot.com",
+            messagingSenderId: "210805657683",
+            appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+        };
+    
+        import {getDatabase, set, get, update, remove, ref, query,orderByChild,equalTo,child } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig)
+        const db = getDatabase();
+
+        const encodedIdentity = sessionStorage.getItem('Identity');
+        const IDen = decodeURIComponent(encodedIdentity);
+        console.log("Logged in as:", IDen);
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+        const body = document.querySelector("body"),
+            sidebar = body.querySelector(".sidebar"),
+            toggle = body.querySelector(".toggle"),
+            modeSwitch = body.querySelector(".toggle-switch"),
+            modeText = body.querySelector(".mode-text");
+
+        function setDarkMode(isDarkMode) {
+            body.classList.toggle("dark", isDarkMode);
+            modeText.innerText = isDarkMode ? "Light Mode" : "Dark Mode";
+        }
+
+        function toggleDarkMode() {
+            const isDarkMode = body.classList.contains("dark");
+            localStorage.setItem("darkMode", isDarkMode ? "true" : "false");
+            setDarkMode(isDarkMode);
+        }
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+        modeSwitch.addEventListener("click", () => {
+            body.classList.toggle("dark");
+            if (body.classList.contains("dark")) {
+                modeText.innerText = "Light Mode";
+            } else {
+                modeText.innerText = "Dark Mode";
+            }
+            toggleDarkMode();
+        });
+
+        const darkMode = localStorage.getItem("darkMode");
+        if (darkMode === "true") {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+    });
+                    console.log("FETRCHING  " + IDen);
+
+
+    // Reference to the jobList container
+const jobListContainer = document.getElementById('jobList');
+// Function to fetch and display job applications
+function displayJobApplications() {
+    // Reference to the database
+    const dbRef = ref(db);
+
+    // Replace "user123" with the actual user ID
+    console.log("LOGGED IN" + IDen);
+
+    // Query the database for applications of the logged-in user
+    // Reference to the "Applications" node
+    const applicationsRef = child(dbRef, 'Applications');
+    const processRef = child(dbRef, 'Processed_Applications');
+    // Fetch all applications
+    get(applicationsRef)
+        .then((snapshot) => {
+            console.log(snapshot.exists());
+            console.log(snapshot.hasChildren());
+            // Check if there are any child nodes (job applications)
+
+
+         
+            
+            const jobDiv = document.createElement('div');
+            let count = 0;
+            if (snapshot.exists()) {
+                // Clear previous content
+                jobListContainer.innerHTML = '';
+
+                let count = 0; // Initialize a counter for the number of applications
+
+                // Loop through each job application
+                snapshot.forEach((childSnapshot) => {
+                    // Get job application data
+                    const jobApplication = childSnapshot.val();
+                    var regNum = childSnapshot.val().Company_ID;
+
+                    var firstKey = childSnapshot.key
+
+                    get(applicationsRef)
+        .then((snapshot) => {
+
+            snapshot.forEach(function(childSnapshot) {
+                
+                var secondKey = childSnapshot.key
+
+                if(firstKey === secondKey)
+                {
+                }
+                else{
+                    
+
+                }
+
+            })
+
+        })
+
+
+                    // Check if the application belongs to the current user's company
+                    if (IDen === regNum) {
+                        // Create a new jobDiv element for each application
+                        const jobDiv = document.createElement('div');
+                        jobDiv.classList.add('job');
+
+
+                       
+
+                        // Update jobDiv with job information
+                        jobDiv.innerHTML = `
+                            <h2>${jobApplication.Job_Title}</h2>
+                            <p><strong>Industry:</strong> ${jobApplication.Industry}</p>
+                            <p><strong>Type:</strong> ${jobApplication.Job_type}</p>
+                            <p><strong>Salary:</strong> ${jobApplication.Salary}</p>
+                            <p><strong>Name:</strong> ${jobApplication.Name}</p>
+                            <p><strong>Surname:</strong> ${jobApplication.Surname}</p>
+                            <p><strong>Contact:</strong> ${jobApplication.Phone}</p>
+                            <p><strong>Email:</strong> ${jobApplication.Email}</p>
+                            <br>
+                            <button class="process-button"  type="submit" style="width: 205px; height: 55px;">
+                            
+                             Generate score:
+                                <div class="loader"></div>
+
+
+                                
+                            </button>
+                            <br>
+                           
+
+
+                        `;
+
+                        // Append jobDiv to jobListContainer
+                        jobListContainer.appendChild(jobDiv);
+
+                        // Add event listener for the process button
+                       // Add event listener for the process button within this job application
+// Add event listener for the process button within this job application
+
+jobDiv.querySelector('.process-button').addEventListener('click', () => {
+    const button = event.target; // Get the button that was clicked
+
+    // Disable the button
+    button.disabled = true;
+
+    // Change button color (for example purposes)
+    button.style.backgroundColor = '#999'; 
+    
+    button.style.opacity = '0.5'; // Example: reduce opacity
+    button.style.cursor = 'not-allowed'; // Change cursor style// Change to desired cDisplay score with 2 decimal places
+
+    let applicantQualifications = childSnapshot.val().Applicant_Qualifications;
+    let requirements = childSnapshot.val().Requirements;
+
+    // Split qualifications and requirements into arrays of words
+    let applicantWords = normalizeText(applicantQualifications);
+    let requirementWords = normalizeAndFilter(requirements);
+
+    // Find score and loader elements
+    const scoreElement = jobDiv.querySelector('.process-button');
+    const loader = scoreElement.querySelector('.loader');
+
+    // Display loader inside the score element
+    if (loader) {
+        loader.style.display = 'block'; // Show loader if found
+    } else {
+        console.error("Loader element not found.");
+        return; // Exit function if loader element is not found
+    }
+
+    // Hide score display initially (if necessary)
+    scoreElement.style.display = 'inline-block'; // Display score element if found
+
+    // Simulate loading delay (3 seconds)
+    setTimeout(() => {
+        // Calculate matching score
+        let matchingScore = calculateMatchingScore(applicantWords, requirementWords);
+
+        // Update the score display within the current jobDiv
+        if (scoreElement) {
+            // Remove loader and display the matching score
+            if (loader) {
+                loader.style.display = 'none'; // Hide loader
+            }
+            scoreElement.textContent = `Score: ${matchingScore}
+            
+            `; 
+
+            var status = "";
+
+            if(matchingScore >= 70)
+            {
+                status="ACCEPTED";
+            }
+            else if(matchingScore >= 40 && matchingScore <= 60)
+            {
+                status = "PENDING"
+            }else if(matchingScore < 50)
+            {
+                status = "REJECTED";
+            }
+
+
+            set(ref(db, "Processed_Applications/" + childSnapshot.key , showLoading()), {
+            ID: childSnapshot.val().ID,
+            Company_ID: childSnapshot.val().Company_ID,
+            Surname: childSnapshot.val().Surname,
+            Phone: childSnapshot.val().Phone,
+            Email: childSnapshot.val().Email,
+            Job_Title: childSnapshot.val().Job_Title,
+            Job_Type: childSnapshot.val().Job_type,
+            Score:matchingScore,
+            Status: status,
+            
+        }).then(() => {
+          
+          hideLoading();
+          showAlert("Suucessfully processed application for " + childSnapshot.Surname + " " + childSnapshot.Name)
+
+           
+        })
+
+            
+            
+
+        } 
+
+        // Log the results (optional)
+        console.log("Current Job: " + childSnapshot.key);
+        console.log("Matching Score: " + matchingScore);
+    }, 3000); // 3000 milliseconds = 3 seconds
+});
+
+
+
+                        // Increment the counter for each application
+                        count++;
+                    }
+                });
+
+                if (count == 0) {
+                    console.log("ELSE PART");
+                    const container = document.querySelector('.container2');
+                    container.style.height = 'auto';
+                    jobListContainer.innerHTML = '<p>No job applications found.</p>';
+                }
+
+            } else {
+                // If there are no job applications, display a message
+                console.log("No job applications found.");
+                console.log("Number of applications fetched:", count);
+                const container = document.querySelector('.container2');
+                container.style.height = 'auto';
+                jobListContainer.innerHTML = '<p>No job applications found.</p>';
+            }
+
+            // Print the number of applications fetched
+
+        })
+        .catch((error) => {
+            console.error('Error fetching job applications: ', error);
+            jobListContainer.innerHTML = '<p>Error fetching job applications.</p>';
+        });
+}
+
+// Extended list of stopwords
+const stopwords = [
+    'the', 'of', 'and', 'or', 'a', 'an', 'is', 'are', 'was', 'were', 'to', 'from', 'in', 'on', 'at', 'for',
+    'with', 'by', 'as', 'that', 'this', 'these', 'those', 'it', 'its', 'they', 'them', 'their', 'there', 'then',
+    'but', 'not', 'be', 'has', 'have', 'having', 'been', 'about', 'can', 'could', 'will', 'would', 'should',
+    'shall', 'must', 'may', 'might', 'when', 'where', 'who', 'whom', 'which', 'what', 'how', 'why', 'into', 'out',
+    'up', 'down', 'over', 'under', 'above', 'below', 'between', 'among', 'while', 'during', 'after', 'before',
+    'since', 'until', 'while', 'most', 'more', 'less', 'least', 'only', 'just', 'many', 'some', 'few', 'such',
+    'other', 'each', 'every', 'own', 'same', 'so', 'then', 'therefore', 'thus', 'if', 'else', 'though', 'although',
+    'because', 'due', 'since', 'whether', 'until', 'unless', 'even', 'however', 'whereas', 'rather', 'whether',
+    'while', 'whereby', 'wherein', 'whereas', 'wherever', 'whenever', 'whereas', 'whereupon', 'whatever', 'whenever',
+    'whereby', 'wherein', 'whereas', 'wherever', 'whenever', 'whereupon', 'whatever', 'whomever'
+];
+
+
+function normalizeText(text) {
+    // Normalize text by converting to lowercase and splitting into words
+    return text.toLowerCase().match(/\b\w+\b/g) || [];
+}
+
+function normalizeAndFilter(text) {
+    // Normalize text and filter out stopwords
+    return text.toLowerCase().match(/\b\w+\b/g).filter(word => !stopwords.includes(word)) || [];
+}
+
+function calculateMatchingScore(applicantWords, requirementWords) {
+    // Calculate matching score based on the number of common words
+    let count = 0;
+    for (let word of applicantWords) {
+        if (requirementWords.includes(word)) {
+            count++;
+        }
+    }
+
+    // Calculate a percentage score relative to the length of requirementWords
+    let score = (count / requirementWords.length) * 100;
+    return score.toFixed(2); // Return score rounded to 2 decimal places
+}
+
+
+
+// Call the function to display job applications when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    displayJobApplications();
+});
+
+function showLoading() {
+        // Display the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate loading for 3 seconds
+        setTimeout(() => {
+            
+        
+        }, 3000);
+    }
+
+    function hideLoading() {
+    const loadingElement = document.getElementById('loading');
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+}
+
+
+function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert');
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 500);
+                }, 3000); // Adjust the delay for how long the alert stays visible
+            }, 100); // Adding a slight delay to ensure smooth transition
+        }
+
+   
+      
+        </script>
+        
+    </body>
+</html>

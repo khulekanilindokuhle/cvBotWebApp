@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, white, whitesmoke, lightblue, lightcyan);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: inline-block;
+            width: calc(50% - 10px);
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            animation: fadeInUp 1s ease forwards;
+            transition: color 0.3s ease;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="submit"],
+        .form-group input[type="email"] {
+            width: calc(100% - 16px); /* Adjusted width to account for padding and border */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            animation: slideInRight 1s ease forwards;
+        }
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p {
+            animation: fadeInUp 1s ease forwards;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            animation: slideInRight 1s ease forwards;
+        }
+        ol {
+            text-align: left;
+            margin-left: 20px; /* Adjusted to align the list items to the start */
+        }
+        ol li {
+            margin-bottom: 10px;
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        img:hover{
+         box-shadow: 0 0 10px lightskyblue; /* New box shadow on hover */
+        transition: box-shadow 0.5s;
+        }
+        img{
+            border-radius: 10px;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+        }
+        .error {
+            border-color: red !important;
+        }
+        .loading {
+            display: none; /* Initially hide the loading spinner */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px; /* Increase the width */
+            height: 50px; /* Increase the height */
+            border: 5px solid red;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .otp-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .otp-form-group input[type="text"] {
+            width: 40px; /* Width for one character */
+            height: 40px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 0 5px; /* Add some space between inputs */
+            font-size: 20px; /* Make the character bigger */
+        }
+        
+          .hidden {
+            display: none;
+        }
+        
+    </style>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
+</head>
+<body>
+    <canvas id="canvas" class="background-animation"></canvas>
+    
+    <a href="mainLogin.html">
+        <img src="cvBot Logo.png">
+    </a>
+    <h1>&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+    
+    <div class="container">
+        <h2>Create Account</h2>
+        <form id="signup-form" action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" maxlength="10" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="id-number">ID Number:</label>
+                <input type="text" id="id-number" name="id-number"  maxlength="13" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Sign Up">
+            </div>
+        </form>
+    
+        <h2>Password must:</h2>
+        <ol>
+            <li id="password-length">Be at least 8 characters long</li>
+            <li id="password-uppercase">Contain at least one uppercase letter</li>
+            <li id="password-lowercase">Contain at least two lowercase letters</li>
+            <li id="password-digit">Contain at least one digit</li>
+            <li id="password-special-char">Contain Only special character</li>
+        </ol>
+    </div>
+
+    <div class="otp-container hidden">
+        <h2>Confirm OTP</h2>
+        <h4 id="otpEntry"></h4>
+
+       
+            <div class="otp-form-group">
+                <input type="text" id="password1" name="password1" maxlength="1" required="">
+                <input type="text" id="password2" name="password2" maxlength="1" required="">
+                <input type="text" id="password3" name="password3" maxlength="1" required="">
+                <input type="text" id="password4" name="password4" maxlength="1" required="">
+            </div>
+        <br><br>
+            <div class="form-group">
+                <input type="submit" id="confirm-button" value="Confirm">
+            </div>
+       
+    </div>
+
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <script type="module">
+
+        
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let numPoints = 100;
+        let baseRadius = 50;
+        let speed = 3;  // How fast the points move
+
+        let points = [];
+
+        function generatePoints() {
+            for (let i = 0; i < numPoints; i++) {
+                const angle = Math.PI * 2 * Math.random();
+                const radius = Math.random() * baseRadius;
+                points.push({
+                    x: canvas.width / 2 + Math.cos(angle) * radius,
+                    y: canvas.height / 2 + Math.sin(angle) * radius,
+                    dx: Math.random() * speed,
+                    dy: Math.random() * speed
+                });
+            }
+        }
+
+        function drawLine(point1, point2) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';  // Blue with a slight transparency
+            ctx.moveTo(point1.x, point1.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.stroke();
+        }
+
+        function updatePoints() {
+            for (let i = 0; i < numPoints; i++) {
+                points[i].x += points[i].dx;
+                points[i].y += points[i].dy;
+
+                // Check if the point hits the edge of the canvas
+                if (points[i].x < 0 || points[i].x > canvas.width) {
+                    points[i].dx *= -1;
+                }
+
+                if (points[i].y < 0 || points[i].y > canvas.height) {
+                    points[i].dy *= -1;
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the lines
+            for (let i = 0; i < numPoints; i++) {
+                for (let j = i + 1; j < numPoints; j++) {
+                    const distance = Math.sqrt(Math.pow(points[i].x - points[j].x, 2) + Math.pow(points[i].y - points[j].y, 2));
+                    // Only draw lines between points that are close together
+                    if (distance < baseRadius * 2) {
+                        drawLine(points[i], points[j]);
+                    }
+                }
+            }
+
+            updatePoints();
+
+            requestAnimationFrame(draw);
+        }
+
+        generatePoints();
+        draw();
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+            authDomain: "cv-bot-495f8.firebaseapp.com",
+            projectId: "cv-bot-495f8",
+            storageBucket: "cv-bot-495f8.appspot.com",
+            messagingSenderId: "210805657683",
+            appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+        };
+
+        import { getDatabase, set,get, ref , child} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig)
+        const db = getDatabase();
+
+        function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert');
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 500);
+                }, 3000); // Adjust the delay for how long the alert stays visible
+            }, 100); // Adding a slight delay to ensure smooth transition
+        }
+
+        function validateSAID(id) {
+            // Check if the ID is 13 characters long
+            if (id.length !== 13) {
+                return false;
+            }
+
+            // Check if all characters are digits
+            if (!/^\d+$/.test(id)) {
+                return false;
+            }
+
+            // Check the checksum
+            const digits = id.split('').map(Number);
+            const check = digits.pop();
+            const sum = digits.reduce((acc, digit, index) => {
+                return acc + ((index % 2 === 0) ? digit : (digit < 5 ? digit * 2 : digit * 2 - 9));
+            }, 0);
+            const checksum = (10 - (sum % 10)) % 10;
+            return checksum === check;
+        }
+
+        function validatePhoneNumber(phoneNumber) {
+            // Check if the phone number is 10 digits long and starts with a valid South African area code
+            const validAreaCodes = ["060", "061", "062", "063", "064", "065", "066", "067", "068", "069", "071", "072", "073", "074", "081", "082", "083", "084", "085", "086", "087", "088", "089"];
+            if (phoneNumber.length !== 10 || !validAreaCodes.includes(phoneNumber.substring(0, 3))) {
+                return false;
+            }
+
+            // Check if all characters are digits
+            if (!/^\d+$/.test(phoneNumber)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validatePassword(password) {
+            // Minimum length of 8 characters
+            if (password.length < 8) {
+                return false;
+            }
+
+            // At least one uppercase letter
+            if (!/[A-Z]/.test(password)) {
+                return false;
+            }
+
+            // At least two lowercase letters
+            if ((password.match(/[a-z]/g) || []).length < 2) {
+                return false;
+            }
+
+            // At least one digit
+            if (!/\d/.test(password)) {
+                return false;
+            }
+
+            // Only one special character allowed: 
+            if (!/^[A-Za-z0-9@#$_&]*$/.test(password)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function updatePasswordRequirement(password) {
+            const minLengthItem = document.getElementById('password-length');
+            if (password.length >= 8) {
+                minLengthItem.style.color = 'green';
+            } else {
+                minLengthItem.style.color = '';
+            }
+
+            const uppercaseItem = document.getElementById('password-uppercase');
+            if (/[A-Z]/.test(password)) {
+                uppercaseItem.style.color = 'green';
+            } else {
+                uppercaseItem.style.color = '';
+            }
+
+            const lowercaseItem = document.getElementById('password-lowercase');
+            if ((password.match(/[a-z]/g) || []).length >= 2) {
+                lowercaseItem.style.color = 'green';
+            } else {
+                lowercaseItem.style.color = '';
+            }
+
+            const digitItem = document.getElementById('password-digit');
+            if (/\d/.test(password)) {
+                digitItem.style.color = 'green';
+            } else {
+                digitItem.style.color = '';
+            }
+
+            const specialCharItem = document.getElementById('password-special-char');
+            if (/^[A-Za-z0-9@#$_&]*$/.test(password)) {
+                specialCharItem.style.color = 'green';
+            } else {
+                specialCharItem.style.color = '';
+            }
+        }
+
+        function showLoading() {
+        // Display the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate loading for 3 seconds
+        setTimeout(() => {
+            
+        
+        }, 3000);
+    }
+
+
+       function storeIntoDB(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const form = event.target;
+
+            const idNumber = form.querySelector("#id-number").value;
+                        const name = form.querySelector("#name").value;
+                        const surname = form.querySelector("#surname").value;
+                        const phone = form.querySelector("#phone").value;
+                        
+                        const password1 = form.querySelector("#password").value;
+                        const password2 = form.querySelector("#confirm-password").value;
+
+                        const dbref = ref(db);
+
+                        get(child(dbref, "Person/" + idNumber))
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+           showAlert("Account for ID("+idNumber + ") already exist");
+        }
+        else
+        {
+            const otpEntry = document.querySelector("#otpEntry");
+            const signupContainer = document.querySelector('.container');
+            const otpContainer = document.querySelector('.otp-container');
+            const otp_code = Math.floor(1000 + Math.random() * 9000);
+            let emailBody = `<h1>Your OTP is: ${otp_code}</h1>`;
+            const email = form.querySelector("#email").value;
+
+            console.log(email);
+            if (!validateSAID(idNumber)) {
+                form.querySelector("#id-number").classList.add('error');
+                showAlert("Invalid ID number");
+                return;
+            } else {
+                form.querySelector("#id-number").classList.remove('error');
+            }
+
+            if (!validatePhoneNumber(phone)) {
+                form.querySelector("#phone").classList.add('error');
+                showAlert("Invalid phone number");
+                return;
+            } else {
+                form.querySelector("#phone").classList.remove('error');
+            }
+
+            if (!validatePassword(password1)) {
+                showAlert("Password must be at least 8 characters long, contain at least one uppercase letter, at least two lowercase letters, at least one digit, and only one of the following special characters: @, #, $, _, &");
+                return;
+            }
+
+            if (password1 !== password2) {
+                showAlert("Passwords do not match");
+                return;
+            }
+
+            Email.send({
+                SecureToken: "6f9d9226-f645-48d8-b6b3-8a852b339077",
+                To: email,
+                From: "khulekanilindokuhle123@gmail.com",
+                Subject: "Email OTP using JavaScript",
+                Body: emailBody,
+            }).
+           then(
+                message => {
+                    if(message === "OK")
+                    {
+
+                        
+                        signupContainer.classList.add('hidden');
+                        otpContainer.classList.remove('hidden');
+
+                        otpEntry.innerHTML = `OTP has been sent to the email: ${email}`; // Display the message with email
+
+                        const confirmButton = document.getElementById('confirm-button');
+                        
+                        confirmButton.addEventListener('click', () => {
+    var pin1 = document.querySelector("#password1");
+    var pin2 = document.querySelector("#password2");
+    var pin3 = document.querySelector("#password3");
+    var pin4 = document.querySelector("#password4");
+
+    var fullPin = pin1.value + pin2.value + pin3.value + pin4.value;
+    var intOTP = parseInt(otp_code);
+    var fullPinInt = parseInt(fullPin);
+
+    if (fullPinInt === intOTP) {
+        set(ref(db, "Person/" + idNumber , showLoading()), {
+            ID: idNumber,
+            Name: name,
+            Surname: surname,
+            Phone: phone,
+            Email: email,
+            Password: password1
+            
+        },
+        showAlert("Person Added to the database with email: " + email))
+        .then(() => {
+            showAlert("Person Added to the database with email: " + email);
+            form.reset(); // Reset the form after successful submission
+            window.location.href = "signin.html";
+        })
+        .catch((error) => {
+            showAlert("Error: " + error);
+        });
+              }
+                else{
+
+                            pin1.value = '';
+                            pin2.value = '';
+                            pin3.value = '';
+                            pin4.value = '';
+                            pin1.focus();
+
+                            showAlert("Invalid OTP")
+                        }
+
+                            });
+                        }
+    
+                    })
+        }
+    });
+       }
+
+            
+                
+                      
+
+
+        document.getElementById('signup-form').addEventListener('submit', storeIntoDB);
+
+        // Add event listener to password input for updating password requirements
+        document.getElementById('password').addEventListener('input', (event) => {
+            updatePasswordRequirement(event.target.value);
+        });
+
+        const passwordFields = document.querySelectorAll('.otp-form-group input[type="text"]');
+    passwordFields.forEach((field, index) => {
+        field.addEventListener('input', (event) => {
+            const value = event.target.value;
+            if (value.length === 1) {
+                if (index < passwordFields.length - 1) {
+                    passwordFields[index + 1].focus();
+                }
+            } else if (value.length === 0) {
+                if (index > 0) {
+                    passwordFields[index - 1].focus();
+                }
+            }
+        });
+    });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, white, whitesmoke, lightblue, lightcyan);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .reset-container{
+           background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+        }
+        .myId{
+             background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            maxwidth: 400px;
+            width: 300px;
+            height: 275px;
+            text-align: center;
+            z-index: 1;
+          
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center; /* Align items horizontally */
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        [type="password"]{
+            width: 250px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .form-group input[type="text"] {
+            width: 40px; /* Width for one character */
+            height: 40px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 0 5px; /* Add some space between inputs */
+            font-size: 20px; /* Make the character bigger */
+        }
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            width: 150px;
+            height: 50px;
+            border: none;
+            border-radius: 4px;
+            margin-top: auto; /* Push the button to the bottom */
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p {
+            animation: fadeInUp 1s ease forwards;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            animation: slideInRight 1s ease forwards;
+        }
+        .spinner {
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        img:hover{
+            box-shadow: 0 0 10px lightskyblue; /* New box shadow on hover */
+            transition: box-shadow 0.5s;
+        }
+        img{
+            border-radius: 10px;
+        }
+        #myId{
+            width: 200px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        #subId{
+             background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            width: 150px;
+            height: 50px;
+            border: none;
+            border-radius: 4px;
+            margin-top: auto;
+            
+        }
+        #confirm-button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            width: 150px;
+            height: 50px;
+            border: none;
+            border-radius: 4px;
+            margin-top: auto;
+        }
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+        }.loading {
+            display: none; /* Initially hide the loading spinner */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px; /* Increase the width */
+            height: 50px; /* Increase the height */
+            border: 5px solid red;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+
+    </style>
+     <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<body>
+<canvas id="canvas" class="background-animation"></canvas>
+<a href="mainLogin.html"><img src="cvBot Logo.png"></a>
+<h1>&nbsp &nbsp &nbsp &nbsp</h1>
+<div class="login-container hidden">
+    <h2>Confirm OTP</h2>
+    <h4 id="otpEntry"></h4>
+   
+        <div class="form-group">
+            <input type="text" id="password1" name="password1" maxlength="1" required="">
+            <input type="text" id="password2" name="password2" maxlength="1" required="">
+            <input type="text" id="password3" name="password3" maxlength="1" required="">
+            <input type="text" id="password4" name="password4" maxlength="1" required="">
+        </div>
+        <div class="form-group">
+            <input type="submit" id="confirm-button" value="Confirm">
+        </div>
+   
+</div>
+
+<div class="myId ">
+    <br><br>
+     <h2>Enter ID</h2>
+     <input type="text" id="ID" name="myId" maxlength="13" required><br><br>
+     <input type="submit" value="Submit" id="subId">
+</div>
+
+ <div class="reset-container hidden">
+        <h2 >Reset Password</h2>
+        
+            <div class="form-group">
+                
+                <input type="password" id="password" name="password" placeholder="New Password:" required="">
+            </div>
+        
+             <div class="form-group">
+               
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password:" required="">
+            </div>
+        
+            <div class="form-group">
+                <input type="submit" id="confirm-btn" value="Reset">
+            </div>
+       
+
+        <p><a href="signin.html">Back to Login Page</a>.</p>
+    </div>
+
+    <div class="spinner"></div><div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div> 
+
+<script type="module">
+
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+            authDomain: "cv-bot-495f8.firebaseapp.com",
+            projectId: "cv-bot-495f8",
+            storageBucket: "cv-bot-495f8.appspot.com",
+            messagingSenderId: "210805657683",
+            appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+        };
+
+        import {getDatabase, set, get, update, remove, ref, child } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig)
+        const db = getDatabase();
+
+
+        function getPerson()
+        {
+            const dbref = ref(db);
+            get(child)
+        }
+
+
+        function showAlert(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert');
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.classList.add('show');
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 500);
+        }, 3000); // Adjust the delay for how long the alert stays visible
+    }, 100); // Adding a slight delay to ensure smooth transition
+}
+
+function showLoading() {
+        // Display the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate loading for 3 seconds
+        setTimeout(() => {
+            
+        
+        }, 3000);
+    }
+    const submitButton = document.getElementById('subId');
+    const confirmButton = document.getElementById('confirm-button');
+    const confirmBtn = document.getElementById('confirm-btn');
+
+    const loginContainer = document.querySelector('.login-container');
+    const myIdContainer = document.querySelector('.myId');
+    const resetContainer = document.querySelector('.reset-container');
+    const spinner = document.querySelector('.spinner'); // Select the spinner element
+    spinner.style.display = 'none'; // Hide the spinner initially
+
+
+    //checking ID and Email
+    var ID = document.querySelector("#ID");
+    var otpEntry = document.querySelector("#otpEntry");
+    submitButton.addEventListener('click', () => {
+       
+        const dbref = ref(db);
+        spinner.style.display = 'block'; // Show spinner when submit button is clicked
+        showLoading
+
+        get(child(dbref, "Person/" + ID.value))
+        .then((snapshot)=>{
+            spinner.style.display = 'none'; // Hide spinner when response is received
+
+            if(snapshot.exists())
+            {
+                myIdContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+                
+                var email = snapshot.val().Email;
+                var atIndex = email.indexOf('@');
+                var hiddenPart = '*'.repeat(atIndex - 3); // Repeat '*' for the characters between the 3rd character and '@'
+                var visiblePart = email.substring(0, 3); // First 3 characters
+                var remainingPart = email.substring(atIndex); // Remaining characters after '@'
+                var hiddenEmail = visiblePart + hiddenPart + remainingPart;
+                otpEntry.innerHTML = "OTP sent to your email\n " + hiddenEmail;
+                let otp_code = Math.floor(1000 + Math.random() * 9000);
+                let emailBody = `<h1>Your OTP is: ${otp_code}</h1>`;
+            
+
+                Email.send({
+                SecureToken: "6f9d9226-f645-48d8-b6b3-8a852b339077",
+                To: email,
+                From: "khulekanilindokuhle123@gmail.com",
+                Subject: "Email OTP using JavaScript",
+                Body: emailBody,
+            }).then(
+                message => {
+                    if(message === "OK")
+                    {
+                        var pin1 = document.querySelector("#password1");
+                        var pin2 = document.querySelector("#password2");
+                        var pin3 = document.querySelector("#password3");
+                        var pin4 = document.querySelector("#password4");
+                        
+                        
+                   
+                   
+                    
+                        confirmButton.addEventListener('click', () => {
+                        var pin1 = document.querySelector("#password1");
+                        var pin2 = document.querySelector("#password2");
+                        var pin3 = document.querySelector("#password3");
+                        var pin4 = document.querySelector("#password4");
+        
+                        var fullPin = pin1.value + pin2.value + pin3.value + pin4.value;
+                        var intOTP = parseInt(otp_code);
+                        var fullPinInt = parseInt(fullPin);
+
+                        if(fullPinInt == intOTP)
+                        {
+                            loginContainer.classList.add('hidden');
+                            resetContainer.classList.remove('hidden');
+                        
+                            
+                            confirmBtn.addEventListener('click',() => {
+                                var password = document.querySelector("#password").value;
+                                var confrimPassword = document.querySelector("#confirm-password").value;
+
+                                if(password === confrimPassword)
+                                {
+                                   
+	                                    update(ref(db,"Person/" + ID.value),{
+	                            	    Password: confrimPassword
+	
+                                        })
+                                        .then(()=>{
+                                        showAlert("Password reseted");
+                                        })
+                                        .catch((error)=>{
+                                        alert(error);
+                                        });
+                                    
+                                    window.location.href = "signin.html";
+                                }
+                                else{
+                                    showAlert("Passwords don't match")
+                                }
+                            })
+                            
+                        
+                        }else{
+
+                            pin1.value = '';
+                            pin2.value = '';
+                            pin3.value = '';
+                            pin4.value = '';
+                            pin1.focus();
+
+                            showAlert("Invalid OTP")
+                        }
+                        
+    });
+                    }
+                    else{
+                        showAlert("Cant send email");
+                    }
+            
+            
+            });
+            
+        }
+        else{
+            showAlert("ID not found")
+            }
+    });
+        
+        
+        
+    });
+  
+   
+    
+   
+
+    const passwordFields = document.querySelectorAll('.form-group input[type="text"]');
+    passwordFields.forEach((field, index) => {
+        field.addEventListener('input', (event) => {
+            const value = event.target.value;
+            if (value.length === 1) {
+                if (index < passwordFields.length - 1) {
+                    passwordFields[index + 1].focus();
+                }
+            } else if (value.length === 0) {
+                if (index > 0) {
+                    passwordFields[index - 1].focus();
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

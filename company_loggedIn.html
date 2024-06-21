@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Company Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
+        <style>
+            *{
+                font-family: 'Poppins',sans-serif;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            :root{
+                --body-color: #E4E9F7;
+                --sidebar-color:#FFF;
+                --primary-color: #695CFE;
+                --primary-color-light: #F6F5FF;
+                --toggle-color: #DDD;
+                --text-color: #707070;
+                
+                --tran-02: all 0.2s ease;
+                --tran-03: all 0.3s ease ;
+                --tran-04: all 0.4s ease;
+                --tran-05: all 0.5s ease;
+            }
+            body{
+                height: 100px;
+                background: var(--body-color);
+                transition: var(--trans-04)
+            }
+            body.dark{
+                --body-color: #18191A;
+                --sidebar-color:#242526;
+                --primary-color: #3A3B3C;
+                --primary-color-light: #3A3B3C;
+                --toggle-color: #FFF;
+                --text-color: #CCC;
+            }
+            /*===== Sidebar=====*/
+            .sidebar{
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 250px;
+                padding:10px 14px;
+                background: var(--sidebar-color);
+                transition: var(--trans-05);
+                z-index: 100;
+            }
+            .sidebar.close{
+                width: 84px;
+            }
+            .sidebar .text{
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--text-color);
+                transition: var(--trans-03);
+                white-space: nowrap;
+                opacity: 1;
+            }
+            .sidebar.close .text{
+                opacity: 0;
+            }
+            .sidebar .image{
+                min-width: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar li{
+                height: 50px;
+                margin-top: 10px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                
+            }
+            .sidebar li .icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width:  60px;
+                font-size: 20px;
+            }
+            .sidebar li .icon,
+            .sidebar li .text{
+                color: var(--text-color);
+                transition: var(--trans-02);
+            }
+            .sidebar header{
+                position: relative;
+            }
+            .sidebar .image-text img{
+                width: 100px;
+                border-radius: 6px;
+            }
+            .sidebar header .image-text{
+                display: flex;
+                align-items: center;
+                
+            }
+            header .image-text .header-text{
+                display: flex;
+                flex-direction: column;
+            }
+            .header-text .name{
+                font-weight: 600;
+            }
+            .header-text .profession{
+                margin-top: -2px;
+            }
+            .sidebar header .toggle{
+                position: absolute;
+                top: 70px;
+                right: -15px;
+                transform: translateY(-50%) rotate(180deg);
+                height: 25px;
+                weight: 25px;
+                background: var(--primary-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                color: var(--sidebar-color);
+                font-size: 22px;
+                transition: var(--trans-04);
+            }
+            .sidebar.close header .toggle{
+                transform: translateY(-50%);
+            }
+            body.dark .sidebar header .toggle{
+                color: var(--text-color);
+            }
+            .sidebar .menu{
+                margin-top: 35px;
+            }
+            .sidebar .search-box{
+                padding-left: 20px;
+                background: var(--primary-color-light);
+                border-radius: 6px;
+                transition: var(--trans-05);
+            }
+            .search-box input{
+                height: 100%;
+                width: 100%;
+                padding-left: 20px;
+                outline: none;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: 500;
+                background: var(--primary-color-light);
+                transition: var(--trans-05);
+            }
+            .sidebar li a{
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                border-radius: 6px;
+                transition: var(--tran-04);
+            }
+            .sidebar li a:hover{
+                background: var(--primary-color);
+            }
+            body.dark .sidebar li a:hover .icon,
+            body.dark .sidebar li a:hover .text{
+                color: var(--text-color);
+            }
+            .sidebar li a:hover .icon,
+            .sidebar li a:hover .text{
+                color: var(--sidebar-color);
+            }
+            .sidebar .menu-bar{
+                height: calc(100% - 50px);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                
+            }
+            /*== Dark MOde==*/
+            .menu-bar .mode{
+                position: relative;
+                border-radius: 6px;
+                background: var(--primary-color-light);
+            }
+            .menu-bar .mode .moon-sun{
+                height: 50px;
+                width: 60px;
+                display: flex;
+                align-items: center;
+                
+            }
+            .menu-bar .mode i{
+                position: absolute;
+                transition: var(--trans-03);
+            }
+            .menu-bar .mode i.sun{
+                opacity: 0;
+            }
+            body.dark .menu-bar .mode i.sun{
+                opacity: 1;
+            }
+            body.dark .menu-bar .mode i.moon{
+                opacity: 0;
+            }
+            .menu-bar .mode .toggle-switch{
+                position: absolute;
+                right: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                min-width: 60px;
+                cursor: pointer;
+                border-radius: 6px;
+                background: var(--primary-color-light);
+                transition: var(--trans-05);
+            }
+            .toggle-switch .switch{
+                position: relative;
+                height: 22px;
+                width: 40px;
+                border-radius: 25px;
+                background: var(--toggle-color);
+                transition: var(--trans-05);
+            }
+            .switch::before{
+                content: '';
+                position: absolute;
+                height: 15px;
+                width: 15px;
+                border-radius: 50%;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
+                background: var(--sidebar-color);
+                transition: var(--trans-03);
+            }
+            body.dark .switch::before{
+                left: 24px;
+            }
+            
+            /*=========*/
+            .home{
+                position: relative;
+                height: 100vh;
+                left: 250px;
+                width: calc(100% - 250px);
+                background: var(--body-color);;
+                transition: var(--trans-05);
+            }
+            .home .text{
+                padding-top: 20px;
+                font-size: 30px;
+                font-weight: 500;
+                color: var(--text-color);
+                text-align: center;
+            }
+            .home .about{
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--text-color);
+                padding: 8px 50px;
+            }
+            .home .container2{
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--text-color);
+                padding: 8px 50px;
+            }
+            .sidebar.close ~ .home{
+                left: 88px;
+                width: calc(100% - 88px);
+            }
+            .container2 {
+                position: absolute;
+                left: 400px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 600px;
+                height: 950px;
+                padding-top: 120px;
+            }
+            .primary-button2 {
+                background: var(--primary-color);
+                width: 300px;
+                height: 50px;
+                text-align: center;
+                font-size: 15px;
+                border-radius: none;
+      
+            }
+            .primary-button2:hover {
+                background-color: #ccc;
+            }
+            
+            .contain5{
+       border: solid 0.5px lightskyblue;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+        text-align: center;
+        width: 1200px;
+       height: 1200px;
+    }
+    .line2{
+        border-top: 0.5px solid lightskyblue; /* Black line on top */
+      width: 400px; /* Full width */
+      height: 0px; /* No height (creates a line) */
+      margin: 10px auto; /* Center and add margin */
+    }
+        </style>
+    </head>
+    <body>
+        <nav class="sidebar close">
+            <header>
+                <div class = "image-text">
+                    <span class ="image">
+                        <a href="index.html"><a href="index.html"><img src="cvBot Logo.png" alt="logo"></a> 
+                    </span>
+                    
+                    
+                </div>
+                 
+                <i class='bx bxs-chevron-right toggle' ></i>
+            </header>
+            
+            <div class="menu-bar">
+                <div class="menu">
+                    <ul class="menu-links">
+                        <li class="nav-link">
+                            <a href ="company_loggedIn.html">
+                                <i class='bx bx-home icon'></i>
+                                <span class="text nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="addJob.html">
+                                <i class='bx bx-plus icon'></i>
+                                <span class="text nav-text">Add Job</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="processJobs.html">
+                                <i class='bx bx-briefcase icon'></i>
+                                <span class="text nav-text">Jobs</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="#">
+                                <i class='bx bxs-group icon'></i>
+                                <span class="text nav-text">Candidates</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="#">
+                                <i class='bx bx-calendar-alt icon'></i>
+                                <span class="text nav-text">Interview</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="analyrics.html">
+                                <i class='bx bx-align-right bx-rotate-90 icon'></i>
+                                <span class="text nav-text">Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href ="summary.html">
+                                <i class='bx bx-book-open icon'></i>
+                                <span class="text nav-text">Summary</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class ="bottom-content">
+                    <li class="">
+                        <a href ="index.html">
+                            <i class='bx bx-log-out icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                    <li class="mode">
+                        <div class="moon-sun">
+                            <i class='bx bx-moon icon moon'></i>
+                            <i class='bx bx-sun icon sun'></i>
+                        </div>
+                        <span class ="mode-text text">Dark mode</span>
+                        
+                        <div class="toggle-switch">
+                            <span class ="switch"></span>
+                        </div>
+                    </li>
+                    
+                </div>
+                
+            </div>
+            
+            
+        </nav>
+        
+        <nav class="below">
+            
+        </nav>
+
+        <section class ="home">
+         
+            <div class="container2">
+                <div class="text">
+                    Dashboard</div>
+                    
+                    <br>
+        <br>
+        <i class='bx bxs-user'></i><br><br>
+        <h3 id="yourName"></h3> 
+        <div class="line2">
+             <br>
+         </div>
+         <br>
+         <br>
+        <i class='bx bxs-envelope'></i> <br><br>
+        <h3  id="envelop"></h3>
+         <div class="line2">
+             <br>
+         </div>
+         <br>
+         <br>
+         
+         <i class="bx bxs-phone-call"></i> <br><br>
+         <h3 id="phone"></h3>
+        <div class="line2">
+             <br>
+         </div>
+        <br>
+        <br>
+        
+        <i class='bx bx-buildings'></i></i> <br><br>
+        <h3 id="compIndustry"></h3>
+         <div class="line2">
+             <br>
+         </div>
+         
+         <br>
+         <br>
+                <p>By continuing, you agree to receive Job application from CVBot </p>
+                <br>
+                <h2>Update Comapny </h2>
+                <div class="line">
+                    <br>
+                </div>
+                <input type="submit" value="Update Company Details" class="primary-button2">
+                
+                
+                <div class="line">
+                    <br>
+                </div>
+                <div class="line">
+                    <br>
+                </div>
+                <div class="footer">
+                    <p>&copy;2024 CVBot - Cookies, Privacy and Terms</p>
+                </div>
+                
+            </div>
+        </section>
+          
+  <script type="module">
+
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+    
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+            authDomain: "cv-bot-495f8.firebaseapp.com",
+            projectId: "cv-bot-495f8",
+            storageBucket: "cv-bot-495f8.appspot.com",
+            messagingSenderId: "210805657683",
+            appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+        };
+    
+        import {getDatabase, set, get, update, remove, ref, child } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig)
+        const db = getDatabase();
+
+        const encodedIdentity = sessionStorage.getItem('Identity');
+        const IDen = decodeURIComponent(encodedIdentity);
+        console.log("Logged in as:", IDen);
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert');
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 500);
+                }, 3000); // Adjust the delay for how long the alert stays visible
+            }, 100); // Adding a slight delay to ensure smooth transition
+        }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+        const body = document.querySelector("body"),
+            sidebar = body.querySelector(".sidebar"),
+            toggle = body.querySelector(".toggle"),
+            modeSwitch = body.querySelector(".toggle-switch"),
+            modeText = body.querySelector(".mode-text");
+
+        function setDarkMode(isDarkMode) {
+            body.classList.toggle("dark", isDarkMode);
+            modeText.innerText = isDarkMode ? "Light Mode" : "Dark Mode";
+        }
+
+        function toggleDarkMode() {
+            const isDarkMode = body.classList.contains("dark");
+            localStorage.setItem("darkMode", isDarkMode ? "true" : "false");
+            setDarkMode(isDarkMode);
+        }
+
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+        modeSwitch.addEventListener("click", () => {
+            body.classList.toggle("dark");
+            if (body.classList.contains("dark")) {
+                modeText.innerText = "Light Mode";
+            } else {
+                modeText.innerText = "Dark Mode";
+            }
+            toggleDarkMode();
+        });
+
+        const darkMode = localStorage.getItem("darkMode");
+        if (darkMode === "true") {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+    });
+                    const dbref = ref(db);
+
+                    var yourName = document.querySelector("#yourName");
+                    var envelop = document.querySelector("#envelop");
+                    var phone = document.querySelector("#phone");
+                    var compIndustry = document.querySelector("#compIndustry");
+get(child(dbref, "Company/" + IDen))
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+            // Person exists in the database
+                        
+            const name = snapshot.val().Company_Name.toUpperCase();
+            const email = snapshot.val().Email.toUpperCase();
+            const phoneNumber = snapshot.val().Phone;
+            const ind = snapshot.val().Industry.toUpperCase();
+
+            yourName.innerHTML = name ; // Use the nameElement to set innerHTML
+            envelop.innerHTML = email;
+            phone.innerHTML = phoneNumber;
+            compIndustry.innerHTML = ind + " INDUSTRY";
+            
+            // Now you can use personData as needed
+        }
+    });
+
+   
+      
+        </script>
+        
+    </body>
+</html>

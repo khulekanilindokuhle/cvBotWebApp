@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Jobs</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <!-- Specify the compatibility mode for Internet Explorer -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Set the viewport to control the layout on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Set the title of the web page -->
+    <title>PDF to Text Extractor</title>
+    <!-- Include the PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+</head>
+<body>
+     <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    header {
+      background-color: lightskyblue;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    form {
+      display: flex;
+      margin-left: 1rem;
+    }
+
+    input[type="text"] {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      flex-grow: 1;
+      margin-right: 0.5rem;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    nav {
+      margin-left: auto;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav li {
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 150px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 15px;
+      border: lightskyblue solid 0.5px;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .container2 {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      left: 300px;
+    }
+
+    .search-bar {
+      display: flex;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="text"] {
+      padding: 0.5rem 1rem;
+      border: none;
+      flex-grow: 1;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: lightskyblue;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      box-shadow: 0 0 17px lightskyblue;
+      transition: 0.3s;
+    }
+
+    .search-icon {
+      margin-right: 0.1rem;
+      padding: 15px 10px;
+    }
+
+    .location-icon {
+      margin-right: 0.1rem;
+      padding: 15px 10px;
+    }
+
+    .job-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+  background-color: white;
+  border: solid lightskyblue 0.5px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.job-mage {
+  width: 600px; /* Set a fixed width */
+  height: 300px; /* Set a fixed height */
+  object-fit: cover; /* Maintain aspect ratio and cover the entire box */
+}
+
+.job-mage:hover {
+  transform: scale(1.05);
+  transition: 0.5s;
+}
+
+.job-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Ensures the job details are aligned to the start (left) */
+    text-align: left; /* Ensures text is left-aligned */
+    padding: 15px; /* Adds padding inside the job-details div */
+}
+
+.job-details h2,
+.job-details h5 {
+    margin: 5px 0;
+}
+
+    .logo-icon {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .icon:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+    }
+
+    .mini-icon:hover {
+      width: 25px;
+      height: 25px;
+      transition: 0.3s;
+    }
+
+    .master-div {
+      
+    }
+
+    .jobs-div {
+      transition: transform 0.5s ease;
+      height: 1100px;
+      width: 1300px;
+    }
+
+  .prifile-div {
+  transform: translateX(0);
+  transition: transform 0.5s ease, width 0.5s ease; /* Add width transition */
+  width: 0px;
+  height: 1300px;
+  background-color:lightcyan;
+  
+  position: absolute;
+  left: 30px;
+  top: 120px;
+  border-radius: 10px;
+  overflow: hidden; /* Hide the content overflow */
+  display: flex; /* Add display flex */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+    .myJobs-div {
+      ransform: translateX(0);
+      transition: transform 0.5s ease, width 0.5s ease; /* Add width transition */
+      width: 0px;
+      height: auto;
+      background-color: lightcyan;
+      position: absolute;
+      left: 30px;
+      top: 120px;
+      border-radius: 10px;
+      overflow: hidden; /* Hide the content overflow */
+     
+    }
+    .reviews-div {
+      ransform: translateX(0);
+      transition: transform 0.5s ease, width 0.5s ease; /* Add width transition */
+      width: 0px;
+      height: auto;
+      background-color: lightcyan;
+      position: absolute;
+      left: 30px;
+      top: 120px;
+      border-radius: 10px;
+      overflow: hidden; /* Hide the content overflow */
+     
+    }
+    
+    .messages-container{
+      ransform: translateX(0);
+      transition: transform 0.5s ease, width 0.5s ease; /* Add width transition */
+      width:100% ;
+      height: 1100px;
+      background-color: lightcyan;
+      position: absolute;
+      left: 30px;
+      top: 120px;
+      border-radius: 10px;
+      overflow: hidden; /* Hide the content overflow */
+     
+    }
+
+    .centered {
+      transform: translateX(0);
+      width: 1300px; /* Adjusted width after sliding */
+    }
+
+    button {
+  font-size: 16px;
+  background-color: lightskyblue;
+  color: #020202;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 120px; /* Set a minimum width for the buttons */
+  padding: 10px 20px; /* Add padding to provide space around the text */
+}
+
+/* Rest of your CSS */
+
+    
+   
+   
+     .contain2 {
+  background-color: white;
+  padding: 30px;
+  border-radius: 5px;
+  text-align: start;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1000px;
+  height: 1000px;
+  /* position: center; Remove this line */
+  /* right: 400px; Remove this line */
+  display: flex; /* Add display flex */
+  flex-direction: column; /* Arrange children vertically */
+  align-items: center; /* Center horizontally */
+}
+    .contain2{
+       border: solid 0.5px lightskyblue;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+        text-align: center;
+        width: 1200px;
+       height: 1200px;
+    }
+input[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px; /* Adjust spacing as needed */
+    }
+    
+     .primary-button1 {
+      background-color: #fff;
+      color: #007bff;
+      width: 250px;
+      height: 50px;
+       outline: 1px solid #007bff;
+      color: #007bff;
+    }
+    .primary-button1:hover{
+          width: 610px;
+      height: 60px;
+      transition: 0.3s;
+    }
+    .primary-button2 {
+      background-color: #fff;
+      width: 600px;
+      height: 50px;
+      text-align: center;
+      font-size: 15px;
+      outline: 1px solid #007bff;
+      color: #007bff;
+    }
+    .primary-button {
+      background-color: #fff;
+      color: #000;
+      width: 600px;
+      height: 50px;
+      text-align: center;
+      font-size: 15px;
+       outline: 1px solid #007bff;
+      color: #007bff;
+    }
+    .primary-button:hover {
+      background-color: #ccc;
+        width: 610px;
+      height: 60px;
+      transition: 0.3s;
+    }
+    .primary-button2:hover {
+      background-color: #ccc;
+        width: 610px;
+      height: 60px;
+      transition: 0.3s;
+    }
+    .secondary-button1{
+        background-color: #fff;
+      color: #007bff;
+      width: 250px;
+      height: 50px;
+      outline: 1px solid #007bff;
+      text-align: center;
+       outline: 1px solid #007bff;
+      color: #007bff;
+    }
+    .secondary-button {
+         outline: 1px solid #007bff;
+      color: #007bff;
+      background-color: #fff;
+      width: 600px;
+      height: 50px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .secondary-button:hover {
+      background-color: lightgrey;
+       width: 610px;
+      height: 60px;
+      transition: 0.3s;
+    }
+    
+    .line {
+      border-top: 0.5px solid ; /* Black line on top */
+      width: 1000px; /* Full width */
+      height: 0px; /* No height (creates a line) */
+      margin: 10px auto; /* Center and add margin */
+    }
+   
+    .line2{
+        border-top: 0.5px solid lightskyblue; /* Black line on top */
+      width: 400px; /* Full width */
+      height: 0px; /* No height (creates a line) */
+      margin: 10px auto; /* Center and add margin */
+    }
+    
+     input[type="file"] {
+            display: none;
+        }
+
+        /* Style for the custom button */
+        .custom-file-upload {
+            border: none;
+            display: inline-block;
+            padding: 15px 12px;
+            cursor: pointer;
+            background-color:lightskyblue;
+            border-radius: 4px;
+            color: white;
+        }
+        .custom-file-upload:hover{
+            padding: 18px 15px;
+            box-shadow: 0 0 10px lightskyblue;
+            transition: 0.3s;
+            
+        } 
+        i{
+          font-size: 40px;
+        }
+        #user_icon{
+            font-size: 120px;
+        }
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .alert.show {
+            opacity: 1;
+        }
+        .error {
+            border-color: red !important;
+        }
+        .loading {
+            display: none; /* Initially hide the loading spinner */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px; /* Increase the width */
+            height: 50px; /* Increase the height */
+            border: 5px solid red;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .disabled-text-cursor {
+    cursor: default; /* Reset cursor to default */
+    position: relative; /* Enable positioning of child element */
+}
+
+.fff::after {
+    content: "This field is disabled"; /* Text to display on hover */
+    position: absolute; /* Position the text relative to the element */
+    top: 50%; /* Center the text vertically */
+    left: 100%; /* Position the text slightly to the right */
+    transform: translateX(-50%); /* Offset the text horizontally for centering */
+    font-size: 12px; /* Adjust font size as needed */
+    color: white; /* Set text color (greyed out for disabled state) */
+    opacity: 0; /* Hide the text initially */
+    transition: opacity 0.2s ease-in-out; /* Smooth opacity change on hover */
+}
+
+.fff:hover::after {
+    opacity: 1; /* Show the text on hover */
+}
+        input[disabled] {
+    text-decoration: none; /* Remove default underline */
+    background-color: white; /* Optional: Light background for disabled state */
+    cursor: not-allowed; /* Set cursor to indicate disabled state */
+}
+
+.btn-container {
+    display: inline-block; /* Ensures container only takes necessary space */
+    vertical-align: middle; /* Aligns contents vertically */
+    line-height: 20px; /* Adjust line height to align text and icon */
+  }
+
+  .location-icon {
+    vertical-align: middle; /* Aligns icon vertically with text */
+    margin-right: 5px; /* Adjust margin between icon and text */
+  }
+
+  
+  
+
+  .search-bar a {
+    text-decoration: none; /* Remove underline from anchor tags */
+  }
+ .search-bar button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 1px;
+    background-color: lightskyblue;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .search-bar button:hover {
+    background-color: #0056b3;
+  }
+  .location-icon {
+    margin-right: 10px;
+  }
+
+  #job-applications {
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #job-applications h2 {
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+            margin: 0;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            max-height: 400px; /* Adjust as needed */
+            overflow-y: auto;
+
+        }
+
+        .application {
+            border-bottom: 1px solid #ddd;
+            padding: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .application:hover {
+            background-color: #f9f9f9;
+        }
+
+        .application:last-child {
+            border-bottom: none;
+        }
+
+        .application p {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .application .company {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #4CAF50;
+        }
+
+        .application .position {
+            color: #555;
+        }
+
+        .application .date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .application .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .status.Applied {
+    background-color: #ffc107; /* Yellow */
+}
+
+.status.Interviewed {
+    background-color: #17a2b8; /* Cyan */
+}
+
+.status.Rejected {
+    background-color: #dc3545; /* Red */
+}
+
+.status.Hired {
+    background-color: #28a745; /* Green */
+}
+
+.upload-container {
+        display: flex;
+        justify-content: start;
+        margin-top: 20px; /* Adjust margin as needed */
+        margin-left: 120px; 
+    }
+
+    #imageUpload {
+        background-color:  #695CFE; /* Use your primary color */
+        color: black;
+        padding: 10px 30px; /* Adjust padding to make the button longer */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 25px;
+        transition: background-color 0.3s ease;
+        width: 100%; /* Make the button full width of its container */
+        max-width: 1100px; /* Set a maximum width if needed */
+        text-align: center; /* Center align text */
+    }
+
+    #imageUpload:hover {
+        background-color: #4a42c0; /* Darken or adjust hover color */
+    }
+
+    /*------------------------------*/
+
+    .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: right;
+            position: relative;
+        }
+
+        .message-icon {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .message-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .message-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 14px;
+        }
+
+        .messages-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+
+        .message {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .message.unread {
+            background-color: #e7f3ff;
+        }
+
+        .message .mark-read {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .message .mark-read:hover {
+            background-color: #0056b3;
+        }
+
+        /*  reviews */
+        .reviews-div header {
+            background-color: lightskyblue;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .reviews-div #report {
+            margin: 20px auto;
+            max-width: 900px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .reviews-div #report h2 {
+            background-color: lightskyblue;
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+            border-bottom: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .reviews-div .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .reviews-div .list-item:hover {
+            background-color: #f9f9f9;
+            transform: translateY(-2px);
+        }
+
+        .reviews-div .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .reviews-div .list-item p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .reviews-div .list-item .name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: lightskyblue;
+        }
+
+        .reviews-div .list-item .count {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .reviews-div .list-item .icon {
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
+
+        .reviews-div .list-item .count-badge {
+            background-color: lightskyblue;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .reviews-div .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .reviews-div .list-item .icon {
+                display: none;
+            }
+
+            .reviews-div .list-item .name {
+                margin-bottom: 10px;
+            }
+        }
+  </style>
+  <header>
+    <div class="container">
+      <a href="mainLogin.html">
+        <img src="cvBot Logo.png" alt="Your Website Logo" width="100" height="70" class="logo-icon">
+      </a>
+      <nav>
+        <ul>
+          <li>
+            <div class="containerer">
+              <div class="dropdown">
+                <span><img src="user.png" alt="message" width="30" height="30" class="icon"></span>
+                <div class="dropdown-content">
+                  <button id="slideButton1"><img src="account.png" alt="message" width="20" height="20" class="mini-icon"> <br>Profile</button> 
+                  <button id="slideButton2"><img src="briefcase.png" alt="message" width="20" height="20" class="mini-icon"><br>&nbsp; Jobs</button> 
+                  <button id="slideButton3"><img src="review.png" alt="message" width="20" height="20" class="mini-icon"><br>Reviews</button>
+                  
+
+                </div>
+              </div>
+              <nav></li>
+                <li><div class="message-icon" id="message-icon">
+                  <span class="message-count" id="message-count">0</span>
+                 <button id="slideButton4"><img src="notification.png" alt="message" width="20" height="20" class="mini-icon"><br></button> 
+    
+                      </div></li>
+          <li><img src="email.png" alt="message" width="30" height="30" class="icon"></li>
+          <li><h1 id="yourName"></h1></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <br><br>
+  <div class="master-div">
+      
+    <div class="jobs-div">
+      <div class="container2">
+      
+        <div class="search-bar">
+          <a href="searchJobs.html">
+            <button id="search-title">
+              <span class="btn-container">
+                <img src="icons8-type-30.png" alt="Job Title Icon" class="location-icon" width="20" height="20">
+                Search by Job Title&nbsp;&nbsp;
+              </span>
+            </button>
+          </a>
+        
+          <a href="searchByLocation.html">
+            <button id="search-location">
+              <span class="btn-container">
+                <img src="location.png" alt="Location Icon" class="location-icon" width="20" height="20">
+                Search by Location&nbsp;&nbsp;
+              </span>
+            </button>
+          </a>
+        
+          <a href="searchBySalary.html">
+            <button id="search-salary">
+              <span class="btn-container">
+                <img src="icons8-rand-60.png" alt="Salary Icon" class="location-icon" width="20" height="20">
+                Search by Salary &nbsp;&nbsp;
+              </span>
+            </button>
+          </a>
+        
+          <a href="searchByIndustry.html">
+            <button id="search-industry">
+              <span class="btn-container">
+                <img src="icons8-factory-50.png" alt="Industry Icon" class="location-icon" width="20" height="20">
+                Search by Industry&nbsp;&nbsp;
+              </span>
+            </button>
+          </a>
+        </div>
+
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="job-container">
+     
+      </div>
+    </div>
+      
+ <div class="prifile-div">
+       
+    <div class="contain2">
+        <br>
+        <br>
+        <i class='bx bxs-user'></i><br><br>
+        <h3 id="user_iconn"></h3> 
+        <div class="line2">
+             <br>
+         </div>
+         <br>
+         <br>
+        <i class='bx bxs-envelope'></i> 
+        <h3  id="envelop"></h3>
+         <div class="line2">
+             <br>
+         </div>
+         <br>
+         <br>
+         
+         &nbsp &nbsp &nbsp &nbsp &nbsp <i class="bx bxs-phone-call"></i> 
+         <h3 id="phone"></h3>
+        <div class="line2">
+             <br>
+         </div>
+        <br>
+        <br>
+        
+        <i class='bx bxs-edit-location'></i></i> Location:
+         <div class="line2">
+             <br>
+         </div>
+         
+         <br>
+         <br>
+         
+         <h2 class="writings">Cv / Resume</h2>
+        
+            <div class="pdfwork">
+        <!-- File input field for selecting the PDF file -->
+        <label for="file" class="custom-file-upload">+ PDF</label>
+        <input type="file" class="selectpdf" id="file" name="file">
+        <!-- Button to upload the selected PDF -->
+        <button class="upload">SUBMIT</button>
+        <!-- Result section (hidden initially) -->
+        <div class="afterupload">
+           
+            <br><br>
+           
+            <!-- Download link for the extracted text file -->
+ <!-- Download link for the extracted text file -->
+            <a href="" class="download  text-decoration: none;" download>
+              <button id="downloadButton" style="display: none; color: white;">Download Pdf Text</button>
+          </a>            <br><br>
+            <!-- Textarea to display the extracted text -->
+            <textarea class="pdftext"></textarea>
+            <!-- Textarea to display the details extracted from the PDF -->
+            <textarea class="details"></textarea>
+        </div>
+    </div>
+        <br><br>
+         <input type="submit" value="Qualifications
+        Highlight your skills and experience" class="primary-button2">
+         <div class="line">
+             <br>
+         </div>
+         <input type="submit" value="Job Preference
+        Save specific details" class="secondary-button">
+         <div class="line">
+             <br>
+         </div>
+        
+         <input type="submit" value="Ready to Work
+        Let employers know that you're available to start working as soon as possible" class="primary-button">
+         <div class="line">
+             <br>
+         </div>
+         <div class="footer">
+           <p>&copy;2024 CVBot - Cookies, Privacy and Terms</p>
+         </div>
+    </div>
+  </div>
+  <div class="messages-container" id="messages-container">
+    <!-- Messages will be dynamically added here -->
+    
+  </div>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+</div>
+
+<div class="messages-container" id="messages-container">
+  <!-- Messages will be dynamically added here -->
+  
+</div>
+   
+      </div>
+    <div class="myJobs-div"> <center><h2>All Job Applications</h2></center>
+      
+      <div class="upload-container">
+        <input type="submit" id="imageUpload" onclick="generatePDF()" value="DOWNLOAD SUMMARY REPORT">
+        
+  
+    </div>
+      
+   
+      <div id="applications-list">
+            <!-- Job applications will be displayed here -->
+            </div>
+          
+            <br>
+            <br>
+
+            
+          
+      </div>
+    <div class="reviews-div"> 
+      <header>
+        <h1>Popular Job Roles and Industries Report</h1>
+    </header>
+
+    <div class="upload-container">
+      <input type="submit" id="imageUpload" onclick="generatePDF()" value="DOWNLOAD SUMMARY REPORT">
+      
+
+  </div>
+
+    <section id="report">
+        <h2>Most Popular Job Roles</h2>
+        <div id="roles-list">
+            <!-- Popular job roles will be displayed here -->
+        </div>
+        <h2>Most Popular Industries</h2>
+        <div id="industries-list">
+            <!-- Popular industries will be displayed here -->
+        </div>
+    </section>
+    </div>
+
+    <script>
+      function generatePDF() {
+          const { jsPDF } = window.jspdf; // Ensure jsPDF is correctly referenced
+          const invoice = document.getElementById('report');
+          
+          // Create a title for the PDF
+          const title = "Most popular jobs report";
+
+          html2canvas(invoice)
+              .then((canvas) => {
+                  const imgData = canvas.toDataURL('image/png');
+                  const pdf = new jsPDF();
+                  const imgProps = pdf.getImageProperties(imgData);
+                  const pdfWidth = pdf.internal.pageSize.getWidth();
+                  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                  // Add title to the PDF
+                  pdf.text(title, pdfWidth / 2, 10, { align: 'center' });
+
+                  // Add image to the PDF
+                  pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight - 20);
+                  
+                  pdf.save('Most popular jobs report.pdf');
+              });
+      }
+  </script>
+  
+ 
+  <script>
+    function generatePDF() {
+        const { jsPDF } = window.jspdf; // Ensure jsPDF is correctly referenced
+        const invoice = document.getElementById('applications-list');
+        
+        // Create a title for the PDF
+        const title = "Job Applications List";
+
+        html2canvas(invoice)
+            .then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                // Add title to the PDF
+                pdf.text(title, pdfWidth / 2, 10, { align: 'center' });
+
+                // Add image to the PDF
+                pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight - 20);
+                
+                pdf.save('Application list summary.pdf');
+            });
+    }
+</script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rolesList = document.getElementById("roles-list");
+        const industriesList = document.getElementById("industries-list");
+
+        // Sample data representing job applications
+        const jobApplications = [
+            { company: "Company A", position: "Software Engineer", industry: "Technology", date: "2024-06-01", status: "Applied" },
+            { company: "Company B", position: "Web Developer", industry: "Technology", date: "2024-05-15", status: "Interviewed" },
+            { company: "Company C", position: "Data Analyst", industry: "Finance", date: "2024-04-20", status: "Rejected" },
+            { company: "Company D", position: "Project Manager", industry: "Management", date: "2024-03-10", status: "Hired" },
+            { company: "Company E", position: "Software Engineer", industry: "Technology", date: "2024-06-05", status: "Applied" },
+            { company: "Company F", position: "Data Analyst", industry: "Finance", date: "2024-04-22", status: "Applied" }
+        ];
+
+        // Function to count the frequency of job roles and industries
+        function countFrequencies(applications, key) {
+            const frequencies = {};
+            applications.forEach(application => {
+                const value = application[key];
+                if (frequencies[value]) {
+                    frequencies[value]++;
+                } else {
+                    frequencies[value] = 1;
+                }
+            });
+            return frequencies;
+        }
+
+        // Function to display the frequencies
+        function displayFrequencies(frequencies, container, className, iconClass) {
+            const sortedFrequencies = Object.entries(frequencies).sort((a, b) => b[1] - a[1]);
+            sortedFrequencies.forEach(([name, count]) => {
+                const listItem = document.createElement("div");
+                listItem.classList.add("list-item");
+
+                const icon = document.createElement("span");
+                icon.classList.add("icon", iconClass);
+                listItem.appendChild(icon);
+
+                const nameElement = document.createElement("p");
+                nameElement.textContent = name;
+                nameElement.classList.add("name", className);
+                listItem.appendChild(nameElement);
+
+                const countElement = document.createElement("span");
+                countElement.textContent = count;
+                countElement.classList.add("count-badge");
+                listItem.appendChild(countElement);
+
+                container.appendChild(listItem);
+            });
+        }
+
+        // Count frequencies of job roles and industries
+        const roleFrequencies = countFrequencies(jobApplications, "position");
+        const industryFrequencies = countFrequencies(jobApplications, "industry");
+
+        // Display the frequencies
+        displayFrequencies(roleFrequencies, rolesList, "role", "🛠");
+        displayFrequencies(industryFrequencies, industriesList, "industry", "🏢");
+    });
+</script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const messages = [
+            { id: 1, text: 'You have a new message regarding your application for the Software Engineer position.', read: false },
+            { id: 2, text: 'Your interview for the Product Manager position has been rescheduled.', read: false },
+            { id: 3, text: 'Your resume has been reviewed.', read: true }
+        ];
+
+        const messageCountElement = document.getElementById('message-count');
+        const messagesContainer = document.getElementById('messages-container');
+        const messageIcon = document.getElementById('message-icon');
+
+        function updateMessageCount() {
+            const unreadCount = messages.filter(message => !message.read).length;
+            messageCountElement.textContent = unreadCount;
+            if (unreadCount === 0) {
+                messageCountElement.style.display = 'none';
+            } else {
+                messageCountElement.style.display = 'block';
+            }
+        }
+
+        function renderMessages() {
+            messagesContainer.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message';
+                if (!message.read) {
+                    messageElement.classList.add('unread');
+                }
+                messageElement.textContent = message.text;
+
+                const markReadButton = document.createElement('button');
+                markReadButton.className = 'mark-read';
+                markReadButton.textContent = 'Mark as read';
+                markReadButton.addEventListener('click', () => {
+                    message.read = true;
+                    updateMessageCount();
+                    renderMessages();
+                });
+
+                messageElement.appendChild(markReadButton);
+                messagesContainer.appendChild(messageElement);
+            });
+        }
+
+        messageIcon.addEventListener('click', () => {
+            messagesContainer.classList.toggle('hidden');
+            messagesContainer.style.display = messagesContainer.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Initial load
+        updateMessageCount();
+        renderMessages();
+    });
+</script>
+
+  <script type="module">
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDHlybIjGRmBdr_DPZZ3o0uVkHDQwA7Zp8",
+        authDomain: "cv-bot-495f8.firebaseapp.com",
+        projectId: "cv-bot-495f8",
+        storageBucket: "cv-bot-495f8.appspot.com",
+        messagingSenderId: "210805657683",
+        appId: "1:210805657683:web:30851513a8a20d1b8436a6"
+    };
+
+    import {getDatabase, set, get, update, remove, ref, child } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig)
+    const db = getDatabase();
+
+    function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+// Retrieve the Identity parameter value from the URL
+// Retrieve the Identity parameter value from the URL
+var Identity = getParameterByName('Identity');
+if(Identity != null)
+{
+  sessionStorage.setItem('Identity', Identity);
+
+}
+ Identity = sessionStorage.getItem('Identity');
+ console.log("DGGVGvvs" + Identity )
+console.log("LODGGED " + Identity)
+console.log("Identity:", Identity); // Output the retrieved Identity value to the console or use it as needed
+
+// Select the HTML element where you want to display the name
+var nameElement = document.querySelector("#yourName");
+var nameIcon = document.querySelector("#user_iconn");
+var envelop = document.querySelector("#envelop");
+var phone = document.querySelector("#phone");
+var lastname = "";
+var firstname = "";
+var email ="";
+var  phoneNum="";
+var  personName="";
+var surname="";
+console.log("nameElement:", nameElement); // Check if nameElement is selecting the correct HTML element
+
+function showLoading() {
+        // Display the loading spinner
+        document.getElementById('loading').style.display = 'block';
+
+        // Simulate loading for 3 seconds
+        setTimeout(() => {
+            
+        
+        }, 3000);
+    }
+
+    function hideLoading() {
+    const loadingElement = document.getElementById('loading');
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+}
+
+function getStatusColor(status) {
+    switch (status) {
+        case "applied":
+            return "#ffc107"; // Yellow
+        case "pending":
+            return "#17a2b8"; // Cyan
+        case "rejected":
+            return "#dc3545"; // Red
+        case "accepted":
+            return "#28a745"; // Green
+        default:
+            return "gray"; // Default color
+    }
+  }
+
+const dbref = ref(db);
+get(child(dbref, "Person/" + Identity))
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+            // Person exists in the database
+                        
+            personName = snapshot.val().Name.toUpperCase();
+            surname = snapshot.val().Surname.toUpperCase();
+            email = snapshot.val().Email.toUpperCase();
+            phoneNum = snapshot.val().Phone.toUpperCase();
+           lastname = surname;
+            firstname = personName;
+
+            console.log("personName:", personName); // Check the value of personName
+            nameElement.innerHTML = personName + " " + surname; // Use the nameElement to set innerHTML
+            nameIcon.innerHTML = personName + " " + surname; // Use the nameElement to set innerHTML
+            envelop.innerHTML = email;
+            phone.innerHTML = phoneNum; // Use the nameElement to set innerHTML
+
+            
+            // Now you can use personData as needed
+        }
+    });
+
+    const dbRef = ref(db);
+
+    
+
+    var compNames = ""
+    const processRef = child(dbRef, 'Processed_Applications');
+    get(processRef)
+        .then((snapshot) => {
+            console.log(snapshot.exists());
+            console.log(snapshot.hasChildren());
+
+            if (snapshot.exists()) {
+
+              const applicationsList = document.getElementById("applications-list");
+
+              snapshot.forEach(childSnapshot => {
+
+                if(Identity == childSnapshot.val().ID)
+                {
+                  const applicationDiv = document.createElement("div");
+                    applicationDiv.classList.add("application");
+
+                    var ideComp = childSnapshot.val().Company_ID;
+                    var idenCompName = "" 
+
+                    get(child(dbref, "Company/" + ideComp))
+            .then((snapshot) => {
+                const idenCompName = snapshot.val().Company_Name;
+
+           
+
+                // Create company element and append to applicationDiv
+                const company = document.createElement("p");
+                company.textContent = `Company name: ${idenCompName}`;
+                company.classList.add("company");
+                applicationDiv.appendChild(company);
+
+                // Create and append other job details
+                const position = document.createElement("p");
+                position.textContent = `Job Title: ${childSnapshot.val().Job_Title}`;
+                position.classList.add("position");
+                applicationDiv.appendChild(position);
+
+                const date = document.createElement("p");
+                date.textContent = `Job Type: ${childSnapshot.val().Job_Type}`;
+                date.classList.add("date");
+                applicationDiv.appendChild(date);
+
+                
+
+                const status = document.createElement("p");
+                status.textContent = childSnapshot.val().Status;
+                status.classList.add("status", childSnapshot.val().Status); // Add status class dynamically
+                status.style.backgroundColor = getStatusColor(childSnapshot.val().Status.toLowerCase()); // Set background color dynamically
+                status.style.padding = "5px 10px";
+                status.style.borderRadius = "5px";
+                status.style.display = "inline-block";
+                status.style.fontSize = "0.9rem";
+                status.style.color = "white";
+                applicationDiv.appendChild(status);
+
+                // Append applicationDiv to applicationsList
+                applicationsList.appendChild(applicationDiv);
+
+
+                      // Set the report date
+
+            }) .catch((error) => {
+                console.error("Error fetching company data:", error);
+            });
+                }
+                else{
+
+                }
+                      
+
+                });
+
+
+            }
+
+
+        })
+
+      
+
+    const slideButton1 = document.getElementById('slideButton1');
+    const content1 = document.querySelector('.jobs-div');
+    const content2 = document.querySelector('.prifile-div');
+
+    var isContent1Centered1 = false;
+
+    slideButton1.addEventListener('click', () => {
+      // Toggle the show class on the profile div
+      content2.classList.toggle('show');
+
+      // Toggle content sliding
+      if (isContent1Centered1) {
+        content1.classList.add('centered');
+        content2.classList.remove('centered');
+      } else {
+        content1.classList.remove('centered');
+        content2.classList.add('centered');
+      }
+
+      isContent1Centered1 = !isContent1Centered1;
+    });
+    //=================================================
+    const slideButton2 = document.getElementById('slideButton2');
+    const content3 = document.querySelector('.jobs-div');
+    const content4 = document.querySelector('.myJobs-div');
+
+    var isContent1Centered2 = false;
+
+    slideButton2.addEventListener('click', () => {
+        
+      if (isContent1Centered2) {
+        content3.classList.add('centered');
+        content4.classList.remove('centered');
+      } else {
+        content3.classList.remove('centered');
+        content4.classList.add('centered');
+      }
+
+      isContent1Centered2 = !isContent1Centered2;
+    });
+
+    // JavaScript for sliding the "Reviews" content
+    const slideButton3 = document.getElementById('slideButton3');
+    const content5 = document.querySelector('.jobs-div');
+    const content6 = document.querySelector('.reviews-div');
+
+    var isContent1Centered3 = false;
+
+    slideButton3.addEventListener('click', () => {
+        
+      if (isContent1Centered3) {
+        content5.classList.add('centered');
+        content6.classList.remove('centered');
+      } else {
+        content5.classList.remove('centered');
+        content6.classList.add('centered');
+      }
+
+      isContent1Centered3 = !isContent1Centered3;
+    });
+
+    // JavaScript for sliding the "Notifications" content
+    const slideButton4 = document.getElementById('slideButton4');
+    const content7 = document.querySelector('.jobs-div');
+    const content8 = document.querySelector('.messages-container');
+
+    var isContent1Centered4 = false;
+
+    slideButton4.addEventListener('click', () => {
+        
+        content8.classList.toggle('show');
+        
+      if (isContent1Centered4) {
+        content7.classList.add('centered');
+        content8.classList.remove('centered');
+      } else {
+        content7.classList.remove('centered');
+        content8.classList.add('centered');
+      }
+
+      isContent1Centered4 = !isContent1Centered4;
+    });
+    
+    const jobContainer = document.querySelector('.job-container');
+
+    
+    //pfd work
+       // Set the worker source for PDF.js library
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
+        // Get references to various elements
+        let pdfinput = document.querySelector(".selectpdf"); // Reference to the PDF file input field
+        let upload = document.querySelector(".upload"); // Reference to the upload button
+        let afterupload = document.querySelector(".afterupload"); // Reference to the result section
+        let select = document.querySelector("select"); // Reference to the page selection dropdown
+        let download = document.querySelector(".download"); // Reference to the download link
+        let pdftext = document.querySelector(".pdftext"); // Reference to the text area for displaying extracted text
+        let detailsTextarea = document.querySelector(".details"); // Reference to the textarea for displaying extracted details
+
+        			        // Event listener for the upload button click
+upload.addEventListener('click', () => {
+    let file = pdfinput.files[0]; // Get the selected PDF file
+    if (file != undefined && file.type == "application/pdf") {
+        let fr = new FileReader(); // Create a new FileReader object
+        fr.readAsDataURL(file); // Read the file as data URL
+        fr.onload = () => {
+            let res = fr.result; // Get the result of file reading
+            extractText(res, false); // Extract text without password
+
+            // Show the download button
+            document.getElementById('downloadButton').style.display = 'block';
+        }
+    } else {
+        alert("Select a valid PDF file");
+    }
+});
+
+
+
+function getJobsData() {
+        const jobsData = [];
+        const jobsRef = ref(db, 'Jobs');
+        
+        return new Promise((resolve, reject) => {
+            get(jobsRef)
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        snapshot.forEach((childSnapshot) => {
+                            const jobData = childSnapshot.val();
+                            jobsData.push(jobData);
+                        });
+                        resolve(jobsData);
+                    } else {
+                        // Handle case where no data exists
+                        resolve(jobsData);
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+
+    var requirements=""
+    
+    displayJobs()
+
+    
+    // Function to display job data in the job-container
+    function displayJobs() {
+
+
+        getJobsData()
+            .then((jobsData) => {
+                jobsData.forEach((job) => {
+
+                   const companyID = job.Company_ID;
+                   requirements = job.Job_Description;
+                 
+
+                    const box = document.createElement('div');
+                    box.classList.add('box');
+
+
+
+                    const img = document.createElement('img');
+                    img.src = job.Image_URL;
+                    img.classList.add('job-mage');
+
+
+                  
+                    const details = document.createElement('div');
+                    details.classList.add('job-details');
+
+                    const title = document.createElement('h2');
+                    title.style.color = 'grey';
+                    title.align
+                    title.textContent = job.Job_Title;
+                    
+                    const level = document.createElement("h5");
+                    level.textContent = "Qualification: " + job.Education_Level;
+
+                    
+                    const description = document.createElement('h5');
+                    description.textContent = "Requirements: " + job.Job_Description;
+
+                    const type = document.createElement('h5');
+                    type.textContent = "Job Type: " + job.Job_Type;
+
+                    const salary = document.createElement('h5');
+                    salary.textContent = "Salary:(Annual): R" + job.Salary;
+
+                    const location = document.createElement('h5');
+                    location.textContent = "Location:" + job.Location;
+
+                    
+
+                   
+
+                    const compName = document.createElement('h5');
+                    const industry = document.createElement('h5');
+                    var comp_Id ="";
+                 
+
+                    get(child(dbref, "Company/" + companyID))
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            // Person exists in the database
+                                        
+                            const name = snapshot.val().Company_Name;
+                            const ind = snapshot.val().Industry;
+                            comp_Id =  snapshot.val().Company_ID;
+                            
+
+                           
+                            compName.textContent = "Company Name: " + name;
+                            industry.textContent = "Industry: " + ind;
+                          
+                        }
+                    });
+                   
+                    const applyButtonContainer = document.createElement('h5');
+                const applyButton = document.createElement('button');
+                applyButton.textContent = "Apply Job";
+                applyButton.classList.add('apply-button');
+
+                // Apply styling to the button to fit in with the rest of the content
+                applyButton.style.marginTop = '10px';
+                applyButton.style.padding = '10px 10px';
+                applyButton.style.backgroundColor = '#007BFF';
+                applyButton.style.color = 'white';
+                applyButton.style.border = 'none';
+                applyButton.style.borderRadius = '5px';
+                applyButton.style.cursor = 'pointer';
+
+                // Add hover effect for the button
+                applyButton.addEventListener('mouseover', () => {
+                    applyButton.style.backgroundColor = '#0056b3';
+                });
+                applyButton.addEventListener('mouseout', () => {
+                    applyButton.style.backgroundColor = '#007BFF';
+                });
+
+                applyButton.addEventListener('click', () => {
+                    const jobDetails = {
+                        title: title.textContent,
+                        companyName: compName.textContent,
+                        industry: industry.textContent,
+                        description: description.textContent,
+                        type: type.textContent,
+                        salary: salary.textContent,
+                        location: location.textContent
+                        
+                    }
+                    
+                    requirements = job.Job_Description;
+                   
+                    let cleanedString = requirements.replace(/[^\w\s]/g, '');
+
+                      // Replace multiple spaces with a single space
+                      cleanedString = cleanedString.replace(/\s+/g, ' ');
+
+                      // Trim leading and trailing spaces
+                      cleanedString = cleanedString.trim();
+                      console.log("NOT CLEANED " +job.Job_Description)   
+
+                      console.log("CLEANED " + cleanedString);
+                                        
+
+                        ;
+
+                   
+                                    
+                    
+get(child(dbref, "Applicant_Qualifications/" + (firstname + " " +lastname + " " + Identity)))
+    .then((snapshot) => {
+        if (snapshot.exists()) {   
+               
+          set(ref(db, "Applications/" + Identity +" "+ (firstname + " " + lastname + " " + title.textContent ) , showLoading()), {
+                        ID: Identity,
+                        Name: personName,
+                        Surname: surname,
+                        Job_Title: title.textContent,
+                        Industry: industry.textContent,
+                        Job_type: type.textContent,
+                        Salary: salary.textContent,
+                        Phone: phoneNum,
+                        Email: email,
+                        Company_ID: companyID,
+                        Requirements: cleanedString,
+                        Applicant_Qualifications: snapshot.val().Qualifications,
+                        
+                       
+         })
+        .then(() => {
+          console.log("COMO " + companyID)
+          
+          hideLoading();
+          console.log("REQUIRE " + requirements);
+
+            showAlert("Successfully applied for " + title.textContent + " job ");
+           
+        })
+        .catch((error) => {
+            showAlert("Error: " + error);
+        });
+        }
+        else{
+          showAlert("Please go to profile to update your cv before you can apply");
+          slideButton1.click();
+        }
+    });
+
+           
+                });
+
+                // Append the button to the container
+                applyButtonContainer.appendChild(applyButton);
+
+                    details.appendChild(title);
+                    details.appendChild(compName);
+                    details.appendChild(industry);
+                    details.appendChild(level);
+                    details.appendChild(description);
+                    details.appendChild(type);
+                    details.appendChild(salary);
+                    details.appendChild(location);
+                    details.appendChild(applyButtonContainer);
+                    
+                    
+                    box.appendChild(img);
+                    box.appendChild(details);
+                    jobContainer.appendChild(box);
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching job data:', error);
+            });
+
+    }
+
+
+
+
+    
+
+
+    // Call the displayJobs function when the page loads
+    //document.addEventListener('DOMContentLoaded', displayJobs);
+
+
+function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.classList.add('alert');
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.add('show');
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 500);
+                }, 3000); // Adjust the delay for how long the alert stays visible
+            }, 100); // Adding a slight delay to ensure smooth transition
+        }
+
+
+        // Function to extract text from the PDF
+        async function extractText(url, pass) {
+            try {
+                let pdf;
+                if (pass) {
+                    pdf = await pdfjsLib.getDocument({ url: url, password: pwd.value }).promise; // Get the PDF document with password
+                } else {
+                    pdf = await pdfjsLib.getDocument(url).promise; // Get the PDF document without password
+                }
+                let pages = pdf.numPages; // Get the total number of pages in the PDF
+                let alltext = []; // Array to store all extracted text
+                for (let i = 1; i <= pages; i++) {
+                    let page = await pdf.getPage(i); // Get the page object for each page
+                    let txt = await page.getTextContent(); // Get the text content of the page
+                    let words = txt.items.map((s) => s.str.toLowerCase().trim()); // Get an array of individual words and convert them to lowercase
+                    let text = words.join(" "); // Join the words with spaces
+                    alltext.push(text); // Add the extracted text to the array
+                }
+                let extractedText = alltext.join("\n"); // Join all extracted text with new lines
+                pdftext.value = extractedText; // Display the extracted text in the textarea
+                afterupload.style.display = "flex"; // Display the result section
+
+                // Extract details like qualifications, skills, education background, and work experience
+                let qualifications = extractQualifications(extractedText);
+                let skills = extractSkills(extractedText);
+                let education = extractEducation(extractedText);
+                let workExperience = extractWorkExperience(extractedText);
+                console.log("THE LOOP");
+
+                var qualificationDetails="";
+
+                for (let i = 0; i < qualifications.length; i++) {
+    // Access each qualification using qualifications[i]
+    
+            
+             qualificationDetails+=  qualifications[i] + " ";
+
+            }
+
+            
+            for (let x = 0; x < skills.length; x++) {
+    // Access each qualification using qualifications[i]
+    
+            
+             qualificationDetails+=  skills[x] + " ";
+
+            }
+
+            for (let f = 0; f < education.length; f++) {
+    // Access each qualification using qualifications[i]
+    
+            
+             qualificationDetails+=  education[f] + " ";
+
+            }
+                
+            for (let g = 0; g < workExperience.length; g++) {
+    // Access each qualification using qualifications[i]
+    
+            
+             qualificationDetails+=  workExperience[g] + " ";
+             console.log(qualificationDetails)
+
+            }
+                
+
+                // Combine all details into a single string
+                let details = qualifications.join("\n") + "\n" +
+                              skills.join("\n") + "\n" +
+                              education.join("\n") + "\n" +
+                              workExperience.join("\n");
+
+                              console.log(details);
+
+                set(ref(db, "Applicant_Qualifications/" + (firstname + " " +lastname + " " + Identity)), {
+                ID: Identity,
+                Qualifications: qualificationDetails
+                
+            })
+                .then(() => {
+                    showAlert("Your Cv information is stored into our database");
+                    !slideButton1.click();
+                    
+                })
+                .catch((error) => {
+                    showAlert("Error: " + error);
+                });
+        
+                // Create a Blob containing the details data
+                let detailsBlob = new Blob([details], { type: 'text/plain' });
+
+                // Set the download link href and make it visible
+                download.href = URL.createObjectURL(detailsBlob);
+                download.style.display = "block";
+
+                // Display the extracted details in the textarea
+                detailsTextarea.value = details;
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        // Function to extract qualifications from CV text
+        function extractQualifications(cvText) {
+            // Define keywords and patterns indicating qualifications
+            const qualificationKeywords = ["education", "degree", "qualification", "certification", "training"];
+            const qualificationPatterns = [
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:of\s*Science|of\s*Arts|in\s*Business Administration|in\s*Computer Science|in\s*Engineering))\b/gi,
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:Degree))\b/gi,
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi,
+                /\b(Certified\s*(?:Professional|Specialist|Associate)\b\s*(?:in|for)\s*[A-Za-z\s]+)\b/gi,
+                /\b(Diploma\s*(?:in|of)\s*[A-Za-z]+)\b/gi,
+                /\b((?:Associate|Bachelor|Master|Ph\.?D)\.?\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi,
+                /\b(Degree\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi,
+                /\b(Graduate\s*(?:Certificate|Diploma))\b/gi,
+                /\b(Training\s*(?:in|on|for)\s*[A-Za-z\s]+)\b/gi
+            ];
+
+            // Initialize an array to store extracted qualifications
+            let qualifications = [];
+
+            // Search for qualifications using keywords and patterns
+            qualificationKeywords.forEach(keyword => {
+                let regex = new RegExp(keyword, "gi");
+                let matches = cvText.match(regex);
+                if (matches) {
+                    matches.forEach(match => {
+                        qualifications.push(match);
+                    });
+                }
+            });
+
+            qualificationPatterns.forEach(pattern => {
+                let matches = cvText.match(pattern);
+                if (matches) {
+                    matches.forEach(match => {
+                        qualifications.push(match);
+                    });
+                }
+            });
+
+            // Remove duplicate qualifications
+            qualifications = [...new Set(qualifications)];
+
+            return qualifications;
+        }
+
+        // Function to extract skills from CV text
+        function extractSkills(cvText) {
+            // Define keywords and patterns indicating skills
+            const skillKeywords = [
+                "skills",
+                "proficiencies",
+                "competencies",
+                "programming",
+                "languages",
+                "frameworks",
+                "tools",
+                "technologies",
+                "communication",
+                "leadership",
+                "project management",
+                "problem-solving",
+                "teamwork",
+                "creativity",
+                "critical thinking",
+                "analytical skills",
+                "time management",
+                "adaptability",
+                "attention to detail",
+                "organizational skills",
+                "negotiation",
+                "decision making",
+                "emotional intelligence",
+                "interpersonal skills",
+                "public speaking",
+                "writing skills",
+                "presentation skills",
+                "research skills",
+                "customer service",
+                "sales skills",
+                "marketing skills",
+                "financial skills",
+                "budgeting",
+                "forecasting",
+                "data analysis",
+                "data visualization",
+                "data management",
+                "statistics",
+                "machine learning",
+                "artificial intelligence",
+                "deep learning",
+                "computer vision",
+                "natural language processing",
+                "big data",
+                "cloud computing",
+                "cybersecurity",
+                "networking",
+                "database management",
+                "web development",
+                "mobile app development",
+                "UI/UX design",
+                "graphic design",
+                "video editing",
+                "audio editing",
+                "photography",
+                "animation",
+                "game development",
+                "3D modeling",
+                "virtual reality",
+                "augmented reality",
+                "blockchain",
+                "robotics",
+                "Internet of Things (IoT)",
+                "automation",
+                "bioinformatics",
+                "nanotechnology",
+                "environmental science",
+                "sustainability",
+                "healthcare",
+                "medicine",
+                "pharmaceuticals",
+                "biotechnology",
+                "agriculture",
+                "forestry",
+                "geology",
+                "archaeology",
+                "history",
+                "anthropology",
+                "psychology",
+                "sociology",
+                "linguistics",
+                "education",
+                "literature",
+                "art",
+                "music",
+                "film",
+                "theater",
+                "dance",
+                "sports",
+                "cooking",
+                "baking",
+                "gardening",
+                "DIY",
+                "fashion",
+                "beauty",
+                "travel",
+                "languages",
+                "cultural awareness",
+                // Additional keywords for specific fields
+                "ICT",
+                "Humanities",
+                "Law",
+                "Health",
+                "Engineering",
+                "Science"
+            ];
+
+            const skillPatterns = [
+                /\b(JavaScript|Java|Python|HTML|CSS|React|Node\.js|SQL|C\+\+|C#|Ruby|PHP|Swift|Objective\-C|Git)\b/gi,
+                /\b(Agile|Scrum|Kanban|Waterfall|Project Management|Leadership|Communication)\b/gi,
+                /\b(Data Analysis|Machine Learning|Artificial Intelligence|Deep Learning|Computer Vision)\b/gi,
+                // Additional patterns for specific fields
+                /\b(Network Security|Cryptography|Penetration Testing)\b/gi, // ICT
+                /\b(History|Philosophy|Literature|Art History)\b/gi, // Humanities
+                /\b(Law|Legal Research|Legal Writing|Civil Law|Criminal Law)\b/gi, // Law
+                /\b(Public Health|Epidemiology|Health Policy|Health Informatics|Medical Terminology)\b/gi, // Health
+                /\b(Mechanical Engineering|Electrical Engineering|Civil Engineering|Chemical Engineering|Aerospace Engineering)\b/gi, // Engineering
+                /\b(Physics|Chemistry|Biology|Mathematics|Environmental Science)\b/gi // Science
+            ];
+
+            // Initialize an array to store extracted skills
+            let skills = [];
+
+            // Search for skills using keywords and patterns
+            skillKeywords.forEach(keyword => {
+                let regex = new RegExp(keyword, "gi");
+                let matches = cvText.match(regex);
+                if (matches) {
+                    matches.forEach(match => {
+                        skills.push(match);
+                    });
+                }
+            });
+
+            skillPatterns.forEach(pattern => {
+                let matches = cvText.match(pattern);
+                if (matches) {
+                    matches.forEach(match => {
+                        skills.push(match);
+                    });
+                }
+            });
+
+            // Remove duplicate skills
+            skills = [...new Set(skills)];
+
+            return skills;
+        }
+
+        // Function to extract education background from CV text
+        function extractEducation(cvText) {
+            // Define keywords and patterns indicating education background
+            const educationKeywords = ["degree", "university", "college", "school", "diploma", "certification"];
+            const educationPatterns = [
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:of\s*Science|of\s*Arts|in\s*Business Administration|in\s*Computer Science|in\s*Engineering))\b/gi,
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:Degree))\b/gi,
+                /\b((?:Bachelor|Master|Ph\.?D)\.?\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi,
+                /\b(Diploma\s*(?:in|of)\s*[A-Za-z]+)\b/gi,
+                /\b(Graduate\s*(?:Certificate|Diploma))\b/gi,
+                /\b(Training\s*(?:in|on|for)\s*[A-Za-z\s]+)\b/gi,
+                // Additional keywords and patterns for specific fields
+                /\b(Major\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi, // General
+                /\b(Minor\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi, // General
+                /\b(Focus\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi, // General
+                /\b(Concentration\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi, // General
+                /\b(Specialization\s*(?:in|of|from|with)\s*[A-Za-z]+)\b/gi // General
+            ];
+
+            // Initialize an array to store extracted education background
+            let education = [];
+
+            // Search for education background using keywords and patterns
+            educationKeywords.forEach(keyword => {
+                let regex = new RegExp(keyword, "gi");
+                let matches = cvText.match(regex);
+                if (matches) {
+                    matches.forEach(match => {
+                        education.push(match);
+                    });
+                }
+            });
+
+            educationPatterns.forEach(pattern => {
+                let matches = cvText.match(pattern);
+                if (matches) {
+                    matches.forEach(match => {
+                        education.push(match);
+                    });
+                }
+            });
+
+            // Remove duplicate education background
+            education = [...new Set(education)];
+
+            return education;
+        }
+
+        // Function to extract work experience from CV text
+        function extractWorkExperience(cvText) {
+            // Define keywords and patterns indicating work experience
+            const experienceKeywords = ["experience", "employment", "position", "job", "career"];
+            const experiencePatterns = [
+                /\b((?:Software|Web|Front\-End|Back\-End)\s*Developer)\b/gi,
+                /\b((?:Software|Web|Front\-End|Back\-End)\s*Engineer)\b/gi,
+                /\b((?:Full\-Stack)\s*Developer)\b/gi,
+                /\b((?:Full\-Stack)\s*Engineer)\b/gi,
+                /\b((?:Data|Business|Systems)\s*Analyst)\b/gi,
+                /\b((?:Data|Business|Systems)\s*Scientist)\b/gi,
+                /\b((?:Product|Project)\s*Manager)\b/gi,
+                /\b((?:Quality|QA)\s*Engineer)\b/gi,
+                /\b((?:UX|UI)\s*Designer)\b/gi,
+                /\b(Network\s*Administrator)\b/gi,
+                /\b(Database\s*Administrator)\b/gi,
+                /\b(System\s*Administrator)\b/gi,
+                // Additional keywords and patterns for specific fields
+                /\b(Research\s*Assistant)\b/gi, // General
+                /\b(Teacher|Educator|Instructor|Professor|Lecturer)\b/gi, // General
+                /\b(Nurse|Physician|Doctor|Surgeon|Therapist)\b/gi, // Healthcare
+                /\b(Lawyer|Attorney|Legal\s*Assistant|Paralegal|Legal\s*Secretary)\b/gi, // Law
+                /\b(Engineer|Technician|Mechanic|Electrician|Plumber)\b/gi // Engineering
+            ];
+
+            // Initialize an array to store extracted work experience
+            let workExperience = [];
+
+            // Search for work experience using keywords and patterns
+            experienceKeywords.forEach(keyword => {
+                let regex = new RegExp(keyword, "gi");
+                let matches = cvText.match(regex);
+                if (matches) {
+                    matches.forEach(match => {
+                        workExperience.push(match);
+                    });
+                }
+            });
+
+            experiencePatterns.forEach(pattern => {
+                let matches = cvText.match(pattern);
+                if (matches) {
+                    matches.forEach(match => {
+                        workExperience.push(match);
+                    });
+                }
+            });
+
+            // Remove duplicate work experience
+            workExperience = [...new Set(workExperience)];
+
+            return workExperience;
+        }
+
+        // Function to execute after the PDF is processed
+        function afterProcess() {
+            // Get the selected page number
+            let page = select.options[select.selectedIndex].value;
+            // Scroll the textarea to the selected page
+            pdftext.scrollTop = pdftext.scrollHeight / select.length * (page - 1);
+        }
+  </script>
+</body>
+</html>

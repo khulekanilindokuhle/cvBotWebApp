@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CvBot Web App</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+      animation: pulsate 2s ease-in-out infinite;
+      overflow: hidden;  /* Ensures letters don't overflow the container */
+    }
+    
+    .container:hover{
+        box-shadow: 0 0 10px blue; /* New box shadow on hover */
+         transition: box-shadow 0.4s;
+    }
+
+    .text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;  /* Fills the container height */
+      font-family: Arial;
+      font-size: 70px;
+      color: blueviolet;
+      animation: text-appear 1s ease-in forwards;
+    }
+
+    .text span {
+      position: relative;  /* Allows for individual letter animation */
+      animation: letter-dance 1s ease-in-out infinite alternate;  /* Alternate animation on each letter  */
+    }
+
+    @keyframes pulsate {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes text-appear {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes letter-dance {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .images{
+                height: 30px;
+                widows: 30px;
+                border-radius: 50px;
+            }
+    .images:hover{
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                height: 40px;
+                widows: 40px;
+                cursor: pointer;
+                transition: 0.5s;
+            }
+            
+       .contact_details{
+                width: 70px;
+                height: 250px;
+                background-color: lightgray;
+                position: absolute;
+                right: 1px;
+                bottom: 20px;
+                border-radius: 10px 0 0 10px;
+                opacity: 0.5;
+                text-align: center;
+                
+            }
+            .contact_details:hover{
+                width: 100px;
+                transition: width 0.8s ;
+                box-shadow: 0 0 10px blue; /* New box shadow on hover */
+                transition: box-shadow 0.5s ;
+            }     
+  </style>
+</head>
+<body>
+    
+  <div class="container">
+      <a href="mainLogin.html" style="text-decoration: none;">
+    <span class="text">
+      <span>C</span>
+      <span>v</span>
+      <span>B</span>
+      <span>o</span>
+      <span>t</span>
+    </span>
+          </a>
+  </div>
+
+  <div class="contact_details">
+         <br>
+            <a href="https://web.whatsapp.com" target="_blank">
+                <img src="purple Whatsapp.jpg" class="images">
+            </a>
+         <br>
+         <br>
+         <br>
+         <br>
+          <a href="https://www.instagram.com" target="_blank">
+         <img src="purple insta.jpg" class="images">
+         </a>
+         <br>
+         <br>
+         <br>
+         <br>
+          <a href="http://www.facebook.com" target="_blank">
+         <img src="purple facebook.jpg" class="images">
+         </a>
+     </div>
+    
+</body>
+</html>

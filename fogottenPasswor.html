@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Forgotten Password</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .background-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, white, whitesmoke, lightblue, lightcyan);
+        background-size: 400% 400%;
+        animation: gradientAnimation 15s ease infinite;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            animation: fadeInUp 1s ease forwards;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            animation: slideInRight 1s ease forwards;
+        }
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p {
+            animation: fadeInUp 1s ease forwards;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            animation: slideInRight 1s ease forwards;
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+         @keyframes gradientAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+      img:hover{
+         box-shadow: 0 0 10px lightskyblue; /* New box shadow on hover */
+        transition: box-shadow 0.5s;
+        }
+        img{
+            border-radius: 10px;
+        }
+    </style>
+        
+    </head>
+    <body>
+        
+         <canvas id="canvas" class="background-animation">
+        
+    </canvas>
+    <a href="index.html">
+        <img src="cvBot Logo.png">
+        </a>
+    <h1>&nbsp &nbsp &nbsp &nbsp</h1>
+    <div class="login-container">
+        <h2>Reset Password</h2>
+        <form action="login.php" method="POST">
+            
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+             <div class="form-group">
+                <label for="password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Resert">
+            </div>
+        </form>
+        <p><a href="signin.html">Back to Login Page</a>.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let numPoints = 100;
+        let baseRadius = 50;
+        let speed = 3;  // How fast the points move
+
+        let points = [];
+
+        function generatePoints() {
+            for (let i = 0; i < numPoints; i++) {
+                const angle = Math.PI * 2 * Math.random();
+                const radius = Math.random() * baseRadius;
+                points.push({
+                    x: canvas.width / 2 + Math.cos(angle) * radius,
+                    y: canvas.height / 2 + Math.sin(angle) * radius,
+                    dx: Math.random() * speed,
+                    dy: Math.random() * speed
+                });
+            }
+        }
+
+        function drawLine(point1, point2) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';  // Blue with a slight transparency
+            ctx.moveTo(point1.x, point1.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.stroke();
+        }
+
+        function updatePoints() {
+            for (let i = 0; i < numPoints; i++) {
+                points[i].x += points[i].dx;
+                points[i].y += points[i].dy;
+
+                // Check if the point hits the edge of the canvas
+                if (points[i].x < 0 || points[i].x > canvas.width) {
+                    points[i].dx *= -1;
+                }
+
+                if (points[i].y < 0 || points[i].y > canvas.height) {
+                    points[i].dy *= -1;
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the lines
+            for (let i = 0; i < numPoints; i++) {
+                for (let j = i + 1; j < numPoints; j++) {
+                    const distance = Math.sqrt(Math.pow(points[i].x - points[j].x, 2) + Math.pow(points[i].y - points[j].y, 2));
+                    // Only draw lines between points that are close together
+                    if (distance < baseRadius * 2) {
+                        drawLine(points[i], points[j]);
+                    }
+                }
+            }
+
+            updatePoints();
+
+            requestAnimationFrame(draw);
+        }
+
+        generatePoints();
+        draw();
+    </script>
+        
+    </body>
+</html>
